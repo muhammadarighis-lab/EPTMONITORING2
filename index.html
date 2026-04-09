@@ -3,15 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPT & EPB Monitor - Ivory Pro</title>
+<title>Dashboard EPT & EPB - APR vs JAN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root{
+  /* Theme: Ivory & Professional */
   --bg:#fdfaf5; --bg2:#ffffff; --bg3:#f4f1ea; --border:#e2e0d9; --border2:rgba(0,0,0,0.05);
-  --red:#d63a2f; --red-hi:#f04438; --blue:#3b8cf0; --green:#16a34a; --amber:#d97706;
-  --text:#2d3436; --text2:#636e72; --text3:#b2bec3;
+  --red:#d63a2f; --red-hi:#f04438; --blue:#3b8cf0; --blue-dim:rgba(59,140,240,0.1);
+  --green:#16a34a; --text:#2d3436; --text2:#636e72; --text3:#b2bec3;
   --font:'Roboto',sans-serif; --display:'Syne',sans-serif; --mono:'DM Mono',monospace;
   --r:10px; --r-lg:14px;
 }
@@ -33,26 +34,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 .fi-lbl{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--text2);display:flex;justify-content:space-between}
 .fi-lbl span{color:var(--red);cursor:pointer;font-weight:400;text-transform:none}
 
-/* Checkbox Container */
 .cb-list{
   background:var(--bg); border:1px solid var(--border); border-radius:var(--r);
-  height:130px; overflow-y:auto; padding:8px; display:flex; flex-direction:column; gap:4px;
+  height:120px; overflow-y:auto; padding:8px; display:flex; flex-direction:column; gap:4px;
 }
 .cb-item{display:flex; align-items:center; gap:8px; font-size:11px; cursor:pointer; padding:2px 4px; border-radius:4px}
 .cb-item:hover{background:var(--bg3)}
 .cb-item input{cursor:pointer; accent-color:var(--red)}
 
 .fi-hke input{width:100%; padding:10px; border:1px solid var(--border); border-radius:var(--r); background:var(--bg)}
-.btn-ap{background:var(--red); color:#fff; border:none; padding:12px; border-radius:var(--r); font-weight:700; cursor:pointer; margin-top:20px; transition:0.2s}
-.btn-ap:hover{background:var(--red-hi); box-shadow:0 4px 12px rgba(214, 58, 47, 0.2)}
+.btn-ap{background:var(--red); color:#fff; border:none; padding:12px; border-radius:var(--r); font-weight:700; cursor:pointer; margin-top:20px; transition: 0.2s}
+.btn-ap:hover{background:var(--red-hi); box-shadow: 0 4px 12px rgba(214, 58, 47, 0.2)}
 
-/* ── CARDS & PANELS ── */
+/* ── CARDS ── */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.card{background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px}
-.card-tag{font-size:9px; font-weight:700; color:var(--text3); margin-bottom:4px}
-.cv{font-size:26px; font-weight:800}
+.card{background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-lg); padding:16px; border-top:3px solid var(--border)}
+.card-apr{border-top-color: var(--red)}
+.card-jan{border-top-color: var(--blue); background: var(--bg3)}
+.cv{font-size:26px; font-weight:800; letter-spacing:-1px}
 .cs{font-family:var(--mono); font-size:10px; color:var(--text2)}
 
+/* ── PANELS ── */
 .crow{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:20px}
 .panel{background:var(--bg2); border:1px solid var(--border); border-radius:var(--r-lg); overflow:hidden}
 .ph{padding:12px 16px; background:var(--bg3); font-weight:700; font-size:12px; border-bottom:1px solid var(--border)}
@@ -62,18 +64,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 /* ── TABLES ── */
 .tw{overflow:auto}
 table{width:100%; border-collapse:collapse}
-th{text-align:left; font-size:10px; text-transform:uppercase; color:var(--text2); padding:10px; background:var(--bg3); position:sticky; top:0}
-td{padding:10px; font-size:12px; border-bottom:1px solid var(--border2)}
+th{text-align:left; font-size:9px; text-transform:uppercase; color:var(--text2); padding:10px; background:var(--bg3); position:sticky; top:0; z-index: 10}
+td{padding:10px; font-size:11px; border-bottom:1px solid var(--border2)}
 .r{text-align:right}
+.sep{border-left:2px solid var(--bg3)}
 .bdg{padding:2px 6px; border-radius:4px; font-family:var(--mono); font-weight:700}
 .ept-ok{background:#dcfce7; color:#166534}
 .ept-low{background:#fee2e2; color:#991b1b}
 
 .gb-wrap{margin-bottom:12px; display:flex; align-items:center; gap:10px}
-.gbb{padding:5px 12px; font-size:11px; border-radius:20px; border:1px solid var(--border); background:var(--bg2); cursor:pointer}
+.gbb{padding:5px 12px; font-size:11px; border-radius:20px; border:1px solid var(--border); cursor:pointer; background: #fff}
 .gbb.on{background:var(--text); color:#fff; border-color:var(--text)}
 
-#ov{position:absolute; inset:0; background:var(--bg2); display:flex; align-items:center; justify-content:center; z-index:10}
+#ov{position:absolute; inset:0; background:var(--bg2); display:flex; align-items:center; justify-content:center; z-index:100}
 .spinner{width:24px; height:24px; border:3px solid var(--bg3); border-top-color:var(--red); border-radius:50%; animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
@@ -82,7 +85,7 @@ td{padding:10px; font-size:12px; border-bottom:1px solid var(--border2)}
 
 <header class="hdr">
   <div class="brand-name">Dashboard Monitor <em>EPT &amp; EPB</em></div>
-  <div style="font-size:11px; font-weight:600; color:var(--text2)">JAN vs APR 2026</div>
+  <div style="font-size:11px; font-weight:600; color:var(--text2)">Baseline: JAN vs Current: APR 2026</div>
 </header>
 
 <div class="main">
@@ -113,31 +116,31 @@ td{padding:10px; font-size:12px; border-bottom:1px solid var(--border2)}
       </div>
       <div class="fi-group fi-hke">
         <label class="fi-lbl">Maks HKE</label>
-        <input type="number" id="fhke" placeholder="31" value="31">
-        <button class="btn-ap" onclick="render()">Terapkan</button>
+        <input type="number" id="fhke" value="31">
+        <button class="btn-ap" onclick="render()">TERAPKAN</button>
       </div>
     </div>
   </div>
 
   <div class="cards">
-    <div class="card" style="border-top:3px solid var(--red)">
-      <div class="card-tag">EPT - APR</div>
+    <div class="card card-apr">
+      <div style="font-size:9px; font-weight:700; color:var(--red)">EPT - APRIL</div>
       <div class="cv" id="cv-ept1">—</div>
       <div class="cs" id="cs-ept1">—</div>
     </div>
-    <div class="card" style="border-top:3px solid var(--amber)">
-      <div class="card-tag">EPB - APR</div>
+    <div class="card card-apr">
+      <div style="font-size:9px; font-weight:700; color:var(--red)">EPB - APRIL</div>
       <div class="cv" id="cv-epb1">—</div>
       <div class="cs" id="cs-epb1">—</div>
     </div>
-    <div class="card" style="background:var(--bg3)">
-      <div class="card-tag">EPT - JAN</div>
-      <div class="cv" id="cv-ept2" style="font-size:20px">—</div>
+    <div class="card card-jan">
+      <div style="font-size:9px; font-weight:700; color:var(--blue)">EPT - JANUARI</div>
+      <div class="cv" id="cv-ept2" style="font-size:22px; color:var(--text2)">—</div>
       <div class="cs" id="cs-ept2">—</div>
     </div>
-    <div class="card" style="background:var(--bg3)">
-      <div class="card-tag">EPB - JAN</div>
-      <div class="cv" id="cv-epb2" style="font-size:20px">—</div>
+    <div class="card card-jan">
+      <div style="font-size:9px; font-weight:700; color:var(--blue)">EPB - JANUARI</div>
+      <div class="cv" id="cv-epb2" style="font-size:22px; color:var(--text2)">—</div>
       <div class="cs" id="cs-epb2">—</div>
     </div>
   </div>
@@ -145,29 +148,34 @@ td{padding:10px; font-size:12px; border-bottom:1px solid var(--border2)}
   <div class="crow">
     <div class="panel">
       <div class="ph">Trend EPT Harian (APR vs JAN)</div>
-      <div class="pb"><div class="cbox"><canvas id="ch"></canvas><div id="ov"><div class="spinner"></div></div></div></div>
+      <div class="pb">
+        <div class="cbox">
+          <canvas id="ch"></canvas>
+          <div id="ov"><div class="spinner"></div></div>
+        </div>
+      </div>
     </div>
     <div class="panel">
-      <div class="ph">Ranking EPT (APR)</div>
+      <div class="ph">Top EPT (APR)</div>
       <div class="tw" id="tRankEPT"></div>
     </div>
     <div class="panel">
-      <div class="ph">Ranking EPB (APR)</div>
+      <div class="ph">Top EPB (APR)</div>
       <div class="tw" id="tRankEPB"></div>
     </div>
   </div>
 
   <div class="panel">
-    <div class="ph">Detail Perbandingan Data</div>
-    <div class="tw" id="tDet" style="max-height:400px"></div>
+    <div class="ph">Detail Perbandingan Data (APR vs JAN)</div>
+    <div class="tw" id="tDet" style="max-height:500px"></div>
   </div>
 </div>
 
 <script>
 const SS_ID   = '1cRoZyleTMYqBhZmzr9OgQVRz29ZAyGYeTm_aieKAg3g';
 const API_KEY = 'AIzaSyBE8dSxs_7dLqHFF4M3W_mCoxmjnpBib1k';
-const EPT_STD = 7, EPB_STD = 12;
 const CUR_MO = 'APR', PRE_MO = 'JAN';
+const EPT_STD = 7, EPB_STD = 12;
 
 let RAW = { ept: [], epb: [] };
 let grp = 'cabang';
@@ -176,6 +184,7 @@ let chart = null;
 addEventListener('DOMContentLoaded', () => { initChart(); loadAll(); });
 
 async function loadAll() {
+  document.getElementById('ov').style.display = 'flex';
   try {
     const [re, rb] = await Promise.all([ fetchSh('EPT!A:J'), fetchSh('EPB!A:J') ]);
     RAW.ept = parseData(re, true);
@@ -206,19 +215,15 @@ function parseData(rows, isEPT) {
   });
 }
 
-// ── CASCADING FILTER LOGIC ──
+// ── CASCADING FILTERS ──
 
 function initFilterLists() {
   const all = [...RAW.ept, ...RAW.epb];
-  
-  // Update Region list (Base)
   updateChecklist('fr', [...new Set(all.map(r=>r.region))]);
   
-  // Event listeners for cascading
   document.getElementById('fr').addEventListener('change', () => cascadeFilters('fr'));
   document.getElementById('fc').addEventListener('change', () => cascadeFilters('fc'));
   
-  // Initial build for others
   cascadeFilters('start');
   updateChecklist('fdiv', [...new Set(all.map(r=>r.div))]);
 }
@@ -246,7 +251,6 @@ function updateChecklist(id, items) {
   const container = document.getElementById(id);
   const currentChecked = getChecked(id);
   const sorted = items.filter(Boolean).sort();
-  
   container.innerHTML = sorted.map(v => `
     <label class="cb-item">
       <input type="checkbox" value="${v}" ${currentChecked.includes(v) ? 'checked' : ''}> ${v}
@@ -322,11 +326,19 @@ function initChart() {
     data: {
       labels: [],
       datasets: [
-        { label: 'APRIL', data: [], backgroundColor: 'rgba(214, 58, 47, 0.7)', borderRadius: 4 },
-        { label: 'JANUARI', data: [], type: 'line', borderColor: '#3b8cf0', backgroundColor: 'rgba(59, 140, 240, 0.05)', fill: true, tension: 0.4 }
+        { label: 'APR 2026', data: [], backgroundColor: 'rgba(214, 58, 47, 0.7)', borderRadius: 4 },
+        { label: 'JAN 2026', data: [], type: 'line', borderColor: '#3b8cf0', backgroundColor: 'rgba(59, 140, 240, 0.05)', fill: true, tension: 0.4 }
       ]
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    options: { 
+        responsive: true, 
+        maintainAspectRatio: false, 
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: 'rgba(0,0,0,0.03)' } }
+        }
+    }
   });
 }
 
@@ -353,23 +365,49 @@ function buildSummaryTable(ept, epb) {
   const getKey = r => grp === 'region' ? r.region : (grp === 'area' ? r.area : r.cabang);
   ept.forEach(r => { const k = getKey(r); if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 }; m[k].eEr += r.er; m[k].eVal += r.val; });
   epb.forEach(r => { const k = getKey(r); if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 }; m[k].bEr += r.er; m[k].bVal += r.val; });
-  return Object.values(m).map(i => ({ label: i.label, ept: i.eVal ? (i.eEr/i.eVal) : 0, epb: i.bVal ? (i.bEr/i.bVal) : 0 }));
+  return Object.values(m).map(i => ({ 
+      label: i.label, 
+      ept: i.eVal ? (i.eEr/i.eVal) : 0, 
+      epb: i.bVal ? (i.bEr/i.bVal) : 0 
+  }));
 }
 
 function renderRank(data, targetId, sortKey, std) {
   const sorted = [...data].sort((a,b) => b[sortKey] - a[sortKey]).slice(0, 10);
-  let h = `<table><thead><tr><th>#</th><th>${grp}</th><th class="r">Val</th></tr></thead><tbody>`;
-  sorted.forEach((r, i) => { h += `<tr><td><span class="rk-circle">${i+1}</span></td><td style="font-weight:600">${r.label}</td><td class="r">${bdg(r[sortKey], std)}</td></tr>`; });
+  let h = `<table><thead><tr><th>#</th><th>${grp.toUpperCase()}</th><th class="r">VAL</th></tr></thead><tbody>`;
+  sorted.forEach((r, i) => { 
+      h += `<tr><td><span style="font-size:10px; font-weight:700; color:var(--text3)">${i+1}</span></td><td style="font-weight:600">${r.label}</td><td class="r">${bdg(r[sortKey], std)}</td></tr>`; 
+  });
   document.getElementById(targetId).innerHTML = h + `</tbody></table>`;
 }
 
 function renderDetail(apr, jan) {
   const janMap = Object.fromEntries(jan.map(i => [i.label, i]));
-  let h = `<table><thead><tr><th>${grp.toUpperCase()}</th><th class="r">EPT APR</th><th class="r">EPB APR</th><th class="r sep">Gap EPT</th></tr></thead><tbody>`;
+  
+  let h = `<table><thead><tr>
+    <th rowspan="2">${grp.toUpperCase()}</th>
+    <th colspan="3" class="r" style="background:#fff5f5">EPT (APR VS JAN)</th>
+    <th colspan="3" class="r sep" style="background:#f5faff">EPB (APR VS JAN)</th>
+  </tr><tr>
+    <th class="r">APR</th><th class="r">JAN</th><th class="r">GAP</th>
+    <th class="r sep">APR</th><th class="r">JAN</th><th class="r">GAP</th>
+  </tr></thead><tbody>`;
+
   apr.sort((a,b) => b.ept - a.ept).forEach(a => {
-    const j = janMap[a.label] || { ept:0 };
-    const gap = a.ept - j.ept;
-    h += `<tr><td>${a.label}</td><td class="r">${bdg(a.ept, EPT_STD)}</td><td class="r">${bdg(a.epb, EPB_STD)}</td><td class="r sep" style="color:${gap>=0?'var(--green)':'var(--red)'}; font-weight:700">${gap >= 0 ? '+' : ''}${gap.toFixed(2)}</td></tr>`;
+    const j = janMap[a.label] || { ept:0, epb:0 };
+    const gapEPT = a.ept - j.ept;
+    const gapEPB = a.epb - j.epb;
+
+    h += `<tr>
+      <td style="font-weight:600">${a.label}</td>
+      <td class="r">${bdg(a.ept, EPT_STD)}</td>
+      <td class="r" style="color:var(--text3)">${j.ept.toFixed(2)}</td>
+      <td class="r" style="color:${gapEPT>=0?'var(--green)':'var(--red)'}; font-weight:700">${gapEPT >= 0 ? '+' : ''}${gapEPT.toFixed(2)}</td>
+      
+      <td class="r sep">${bdg(a.epb, EPB_STD)}</td>
+      <td class="r" style="color:var(--text3)">${j.epb.toFixed(2)}</td>
+      <td class="r" style="color:${gapEPB>=0?'var(--green)':'var(--red)'}; font-weight:700">${gapEPB >= 0 ? '+' : ''}${gapEPB.toFixed(2)}</td>
+    </tr>`;
   });
   document.getElementById('tDet').innerHTML = h + `</tbody></table>`;
 }
