@@ -3,218 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPT & EPB Monitor - APR vs JAN</title>
+<title>EPT & EPB Monitor - Ivory Edition</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 :root{
-  --bg:#0a0c0f;--bg2:#111418;--bg3:#181d24;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.04);
-  --red:#d63a2f;--red-hi:#f04438;--red-dim:rgba(214,58,47,0.10);
-  --green:#22c55e;--green-dim:rgba(34,197,94,0.12);
-  --gold:#e8a830;--gold-dim:rgba(232,168,48,0.10);
-  --teal:#22c5a0;--teal-dim:rgba(34,197,160,0.10);
-  --blue:#3b8cf0;--blue-dim:rgba(59,140,240,0.10);
-  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.10);
-  --amber:#f59e0b;
-  --text:#e8ecf0;--text2:#8896a4;--text3:#4a5568;
+  /* Theme: Ivory & Bright */
+  --bg:#fdfaf5; /* Putih Gading */
+  --bg2:#ffffff;
+  --bg3:#f4f1ea;
+  --border:#e2e0d9;
+  --border2:rgba(0,0,0,0.05);
+  --red:#d63a2f;
+  --red-hi:#f04438;
+  --blue:#3b8cf0; /* Warna baru untuk JAN */
+  --green:#16a34a;
+  --amber:#d97706;
+  --text:#2d3436;
+  --text2:#636e72;
+  --text3:#b2bec3;
   --font:'Roboto',sans-serif;--display:'Syne',sans-serif;--mono:'DM Mono',monospace;
   --r:10px;--r-lg:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:14px}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:5px;height:5px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
-  background-image:linear-gradient(var(--border2) 1px,transparent 1px),
-    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
-  background-size:48px 48px;
-  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 20%,transparent 80%);}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.5}
 
 /* ── HEADER ── */
-.hdr{position:sticky;top:0;z-index:200;background:rgba(10,12,15,.9);
+.hdr{position:sticky;top:0;z-index:200;background:rgba(253,250,245,.85);
   backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
   padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:9px}
-.brand-mark{width:26px;height:26px;border-radius:6px;background:var(--red);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--display);font-weight:800;font-size:12px;color:#fff;
-  box-shadow:0 0 10px rgba(214,58,47,.35)}
-.brand-name{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.3px}
-.brand-name em{color:var(--red-hi);font-style:normal}
-.hdr-right{display:flex;align-items:center;gap:10px}
-.comp-badge{background:var(--blue-dim);color:var(--blue);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid rgba(59,140,240,0.3)}
+.brand-name{font-family:var(--display);font-weight:700;font-size:14px;color:var(--text)}
+.brand-name em{color:var(--red);font-style:normal}
+.comp-badge{background:var(--bg3);color:var(--text2);padding:4px 12px;border-radius:99px;font-size:11px;font-weight:600;border:1px solid var(--border)}
 
 /* ── MAIN ── */
-.main{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:16px 22px 56px}
+.main{max-width:1440px;margin:0 auto;padding:20px 24px}
 
-/* ── FILTER BAR ── */
-.fbar{background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:14px 18px;margin-bottom:14px}
-.ftop{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-.flabel{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3)}
-.gbrow{display:flex;gap:4px;flex-wrap:wrap}
-.gbb{padding:4px 11px;border-radius:6px;border:1px solid var(--border);
-  background:transparent;color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;transition:all .15s}
-.gbb:hover{border-color:rgba(214,58,47,.4);color:var(--text)}
-.gbb.on{background:var(--red-dim);border-color:var(--red);color:var(--red-hi)}
+/* ── FILTER (MULTI-SELECT) ── */
+.fbar{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,0.02)}
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr) 100px 120px;gap:12px;align-items:end}
+.fi-lbl{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:4px;display:block}
 
-.fgrid{display:grid;
-  grid-template-columns:repeat(4,1fr) 120px auto;
-  gap:10px;align-items:end}
+/* Styling Multi-select */
+select[multiple]{
+  height:80px;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r);padding:4px;font-size:12px;width:100%;outline:none;
+}
+select[multiple]:focus{border-color:var(--red)}
 
-.fi{display:flex;flex-direction:column;gap:3px}
-.fi-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.7px;
-  color:var(--text3);display:flex;align-items:center;gap:5px}
-.f-act{display:none;font-size:9px;padding:1px 5px;border-radius:3px;
-  background:var(--red-dim);color:var(--red-hi);border:1px solid rgba(214,58,47,.4);
-  text-transform:none;letter-spacing:0;font-weight:700;white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis}
-.f-act.show{display:inline-block}
-.fi select,.fi input[type=number]{background:var(--bg3);border:1px solid var(--border);color:var(--text);
-  padding:7px 9px;border-radius:var(--r);font-size:12.5px;outline:none;width:100%;
-  transition:border-color .15s,background-color .15s;appearance:none;-webkit-appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234a5568' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
-.fi select:focus,.fi input:focus{border-color:var(--red)}
-
-.btn-ap{background:var(--red);border:none;color:#fff;padding:8px 18px;
-  border-radius:var(--r);font-size:12.5px;font-weight:500;cursor:pointer;
-  transition:background .15s;white-space:nowrap;align-self:flex-end}
+.fi input{background:var(--bg);border:1px solid var(--border);padding:8px;border-radius:var(--r);width:100%}
+.btn-ap{background:var(--red);color:#fff;border:none;padding:12px;border-radius:var(--r);font-weight:700;cursor:pointer;width:100%;transition:0.2s}
+.btn-ap:hover{background:var(--red-hi);transform:translateY(-1px)}
 
 /* ── CARDS ── */
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
-  padding:15px 17px;position:relative;overflow:hidden}
-.card-ac{position:absolute;top:0;left:0;right:0;height:2px}
-.c-b1 .card-ac{background:linear-gradient(90deg,var(--red),transparent)}
-.c-b2 .card-ac{background:linear-gradient(90deg,var(--text3),transparent)}
-.card-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;opacity:.6}
-.cl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:2px}
-.cv{font-weight:700;font-size:28px;letter-spacing:-.5px;line-height:1}
-.cs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:5px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);padding:16px;box-shadow:0 2px 5px rgba(0,0,0,0.02)}
+.card-tag{font-size:9px;font-weight:700;margin-bottom:8px;color:var(--text3)}
+.cv{font-size:28px;font-weight:800;letter-spacing:-1px}
+.cs{font-family:var(--mono);font-size:10px;color:var(--text2)}
 
-/* ── LAYOUT ── */
-.crow{display:grid;grid-template-columns:3fr 2fr;gap:12px;margin-bottom:12px}
-.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
-.ph{padding:10px 15px 8px;border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:space-between}
-.pt{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:13px;font-weight:700}
-.pb{padding:12px 14px}
-.cbox{position:relative;height:260px}
+/* ── PANELS ── */
+.crow{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);display:flex;flex-direction:column}
+.ph{padding:12px 16px;border-bottom:1px solid var(--border2);font-weight:700;font-size:13px;display:flex;justify-content:space-between}
+.pb{padding:16px;flex:1}
+.cbox{height:280px;position:relative}
 
-/* ── TABLE ── */
+/* ── TABLES ── */
 .tw{overflow:auto}
-table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{background:var(--bg3);padding:8px 10px;text-align:left;font-size:10px;font-weight:500;text-transform:uppercase;color:var(--text3);position:sticky;top:0;z-index:1;border-bottom:1px solid var(--border)}
-td{padding:8px 10px;color:var(--text);border-bottom:1px solid var(--border2)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--text2);padding:10px;background:var(--bg3);position:sticky;top:0}
+td{padding:10px;font-size:12px;border-bottom:1px solid var(--border2)}
 .r{text-align:right}
-.sep{border-left:1px solid var(--border)}
+.bdg{padding:2px 6px;border-radius:4px;font-family:var(--mono);font-weight:700}
+.ept-ok{background:#dcfce7;color:#166534}
+.ept-low{background:#fee2e2;color:#991b1b}
+.rk-circle{width:20px;height:20px;background:var(--bg3);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
 
-/* ── BADGE ── */
-.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:11px;font-weight:500}
-.ept-ok {background:rgba(34,197,94,.1);color:var(--green)}
-.ept-low{background:rgba(214,58,47,.1);color:var(--red-hi)}
-.rk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;background:var(--bg3);border:1px solid var(--border)}
-.rk1{border-color:var(--gold);color:var(--gold)}
+.gbrow{display:flex;gap:4px;margin-bottom:8px}
+.gbb{padding:4px 10px;font-size:11px;border-radius:6px;border:1px solid var(--border);background:none;cursor:pointer}
+.gbb.on{background:var(--red);color:#fff;border-color:var(--red)}
 
-#ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg2);z-index:10}
-.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:sp .6s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
+#ov{position:absolute;inset:0;background:var(--bg2);display:flex;align-items:center;justify-content:center;z-index:10}
+.spinner{width:24px;height:24px;border:3px solid var(--bg3);border-top-color:var(--red);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.sec-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border2)}
+@media (max-width: 1100px) { .crow { grid-template-columns: 1fr; } .cards { grid-template-columns: 1fr 1fr; } .fgrid { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body>
 
 <header class="hdr">
-  <div class="brand">
-    <div class="brand-mark">N</div>
-    <div class="brand-name">EPT &amp; EPB <em>Monitor</em></div>
-  </div>
-  <div class="hdr-right">
-    <div class="comp-badge">APR vs JAN 2026</div>
-    <button class="btn-rf" style="background:none; border:none; color:var(--text3); cursor:pointer" onclick="loadAll()">↺ Refresh</button>
-  </div>
+  <div class="brand-name">Dashboard Performa <em>EPT &amp; EPB</em></div>
+  <div class="comp-badge">Baseline: JAN vs Current: APR 2026</div>
 </header>
 
 <div class="main">
-
   <div class="fbar">
-    <div class="ftop">
-      <span class="flabel">Filter Dimensi</span>
-      <div class="gbrow">
-        <button class="gbb" data-g="region" onclick="setGroup(this)">Region</button>
-        <button class="gbb on" data-g="cabang" onclick="setGroup(this)">Cabang</button>
-        <button class="gbb" data-g="area" onclick="setGroup(this)">Area</button>
-      </div>
+    <div class="gbrow">
+      <span class="fi-lbl" style="margin-right:10px; padding-top:4px">Grup:</span>
+      <button class="gbb" data-g="region" onclick="setGroup(this)">Region</button>
+      <button class="gbb on" data-g="cabang" onclick="setGroup(this)">Cabang</button>
+      <button class="gbb" data-g="area" onclick="setGroup(this)">Area</button>
     </div>
     <div class="fgrid">
       <div class="fi">
-        <span class="fi-lbl">Region <span class="f-act" id="act-fr"></span></span>
-        <select id="fr" onchange="onFC(this,'act-fr');cscReg()"><option value="">Semua Region</option></select>
+        <label class="fi-lbl">Region (Multi)</label>
+        <select id="fr" multiple></select>
       </div>
       <div class="fi">
-        <span class="fi-lbl">Cabang <span class="f-act" id="act-fc"></span></span>
-        <select id="fc" onchange="onFC(this,'act-fc');cscCab()"><option value="">Semua Cabang</option></select>
+        <label class="fi-lbl">Cabang (Multi)</label>
+        <select id="fc" multiple></select>
       </div>
       <div class="fi">
-        <span class="fi-lbl">Area <span class="f-act" id="act-fa"></span></span>
-        <select id="fa" onchange="onFC(this,'act-fa');cscArea()"><option value="">Semua Area</option></select>
+        <label class="fi-lbl">Area (Multi)</label>
+        <select id="fa" multiple></select>
       </div>
       <div class="fi">
-        <span class="fi-lbl">Divisi <span class="f-act" id="act-fdiv"></span></span>
-        <select id="fdiv" onchange="onFC(this,'act-fdiv')"><option value="">Semua Divisi</option></select>
+        <label class="fi-lbl">Divisi (Multi)</label>
+        <select id="fdiv" multiple></select>
       </div>
       <div class="fi">
-        <span class="fi-lbl">Maks HKE</span>
-        <input type="number" id="fhke" min="1" max="31" placeholder="31">
+        <label class="fi-lbl">Maks HKE</label>
+        <input type="number" id="fhke" placeholder="31">
       </div>
       <div class="fi">
-        <button class="btn-ap" id="btnAp" onclick="render()">Terapkan</button>
+        <button class="btn-ap" onclick="render()">Terapkan</button>
       </div>
     </div>
+    <p style="font-size: 9px; color: var(--text3); margin-top: 8px">* Tahan tombol Ctrl (Windows) atau Command (Mac) untuk memilih lebih dari satu.</p>
   </div>
 
-  <div class="sec-label">Ringkasan Performa APR</div>
   <div class="cards">
-    <div class="card c-b1">
-      <div class="card-ac"></div>
-      <div class="card-tag">APRIL 2026</div>
-      <div class="cl">Avg EPT</div>
+    <div class="card" style="border-left: 4px solid var(--red)">
+      <div class="card-tag">EPT - APRIL</div>
       <div class="cv" id="cv-ept1">—</div>
       <div class="cs" id="cs-ept1">—</div>
     </div>
-    <div class="card c-b1">
-      <div class="card-ac"></div>
-      <div class="card-tag">APRIL 2026</div>
-      <div class="cl">Avg EPB</div>
+    <div class="card" style="border-left: 4px solid var(--amber)">
+      <div class="card-tag">EPB - APRIL</div>
       <div class="cv" id="cv-epb1">—</div>
       <div class="cs" id="cs-epb1">—</div>
     </div>
-    <div class="card c-b2">
-      <div class="card-ac"></div>
-      <div class="card-tag">JANUARI 2026 (Baseline)</div>
-      <div class="cl">Avg EPT</div>
-      <div class="cv" id="cv-ept2" style="font-size:20px; opacity:0.7">—</div>
+    <div class="card" style="opacity: 0.8">
+      <div class="card-tag">EPT - JANUARI</div>
+      <div class="cv" id="cv-ept2" style="font-size: 22px">—</div>
       <div class="cs" id="cs-ept2">—</div>
     </div>
-    <div class="card c-b2">
-      <div class="card-ac"></div>
-      <div class="card-tag">JANUARI 2026 (Baseline)</div>
-      <div class="cl">Avg EPB</div>
-      <div class="cv" id="cv-epb2" style="font-size:20px; opacity:0.7">—</div>
+    <div class="card" style="opacity: 0.8">
+      <div class="card-tag">EPB - JANUARI</div>
+      <div class="cv" id="cv-epb2" style="font-size: 22px">—</div>
       <div class="cs" id="cs-epb2">—</div>
     </div>
   </div>
 
   <div class="crow">
     <div class="panel">
-      <div class="ph"><div class="pt">Trend EPT Harian (APR vs JAN)</div></div>
+      <div class="ph">Trend EPT Harian <span style="font-weight:400; font-size:10px">Apr (Bar Merah) vs Jan (Line Biru)</span></div>
       <div class="pb">
         <div class="cbox">
           <canvas id="ch"></canvas>
@@ -223,16 +169,19 @@ td{padding:8px 10px;color:var(--text);border-bottom:1px solid var(--border2)}
       </div>
     </div>
     <div class="panel">
-      <div class="ph"><div class="pt">Top 10 Performers (APR)</div></div>
-      <div class="tw" id="tRank" style="max-height:300px"></div>
+      <div class="ph">Top EPT (APR)</div>
+      <div class="tw" id="tRankEPT"></div>
+    </div>
+    <div class="panel">
+      <div class="ph">Top EPB (APR)</div>
+      <div class="tw" id="tRankEPB"></div>
     </div>
   </div>
 
-  <div class="sec-label">Detail Perbandingan APR vs JAN</div>
   <div class="panel">
+    <div class="ph">Perbandingan Detail Dimensi</div>
     <div class="tw" id="tDet" style="max-height:400px"></div>
   </div>
-
 </div>
 
 <script>
@@ -245,7 +194,6 @@ let RAW = { ept: [], epb: [] };
 let grp = 'cabang';
 let chart = null;
 
-// Target bulan perbandingan
 const CUR_MO = 'APR';
 const PRE_MO = 'JAN';
 
@@ -291,8 +239,7 @@ function initFilters() {
   const fill = (id, items) => {
     const el = document.getElementById(id);
     const sorted = [...new Set(items.filter(Boolean))].sort();
-    el.innerHTML = `<option value="">Semua ${id.replace('f','')}</option>` + 
-      sorted.map(v=>`<option value="${v}">${v}</option>`).join('');
+    el.innerHTML = sorted.map(v=>`<option value="${v}">${v}</option>`).join('');
   };
   fill('fr', all.map(r=>r.region));
   fill('fc', all.map(r=>r.cabang));
@@ -300,28 +247,32 @@ function initFilters() {
   fill('fdiv', all.map(r=>r.div));
 }
 
+function getMultiSelectValues(id) {
+  return Array.from(document.getElementById(id).selectedOptions).map(o => o.value);
+}
+
 function render() {
   const f = {
-    reg: document.getElementById('fr').value,
-    cab: document.getElementById('fc').value,
-    area: document.getElementById('fa').value,
-    div: document.getElementById('fdiv').value,
+    reg: getMultiSelectValues('fr'),
+    cab: getMultiSelectValues('fc'),
+    area: getMultiSelectValues('fa'),
+    div: getMultiSelectValues('fdiv'),
     hke: +document.getElementById('fhke').value || 31
   };
 
-  const getFiltered = (src, mo, hkeLimit) => src.filter(r => 
-    r.bulan === mo && 
-    (!f.reg || r.region === f.reg) &&
-    (!f.cab || r.cabang === f.cab) &&
-    (!f.area || r.area === f.area) &&
-    (!f.div || r.div === f.div) &&
-    (!hkeLimit || r.hke <= f.hke)
+  const filterLogic = (r, mo, useHke) => (
+    r.bulan === mo &&
+    (f.reg.length === 0 || f.reg.includes(r.region)) &&
+    (f.cab.length === 0 || f.cab.includes(r.cabang)) &&
+    (f.area.length === 0 || f.area.includes(r.area)) &&
+    (f.div.length === 0 || f.div.includes(r.div)) &&
+    (!useHke || r.hke <= f.hke)
   );
 
-  const eptApr = getFiltered(RAW.ept, CUR_MO, true);
-  const eptJan = getFiltered(RAW.ept, PRE_MO, true);
-  const epbApr = getFiltered(RAW.epb, CUR_MO, false);
-  const epbJan = getFiltered(RAW.epb, PRE_MO, false);
+  const eptApr = RAW.ept.filter(r => filterLogic(r, CUR_MO, true));
+  const eptJan = RAW.ept.filter(r => filterLogic(r, PRE_MO, true));
+  const epbApr = RAW.epb.filter(r => filterLogic(r, CUR_MO, false));
+  const epbJan = RAW.epb.filter(r => filterLogic(r, PRE_MO, false));
 
   updateCards(eptApr, epbApr, eptJan, epbJan);
   updateChart(eptApr, eptJan);
@@ -329,7 +280,8 @@ function render() {
   const tblApr = buildSummaryTable(eptApr, epbApr);
   const tblJan = buildSummaryTable(eptJan, epbJan);
   
-  renderRanking(tblApr); // Ranking berdasarkan APR
+  renderRanking(tblApr, 'tRankEPT', 'ept', EPT_STD);
+  renderRanking(tblApr, 'tRankEPB', 'epb', EPB_STD);
   renderDetail(tblApr, tblJan);
 }
 
@@ -337,68 +289,42 @@ function updateCards(eA, bA, eJ, bJ) {
   const calc = (rows) => {
     const er = rows.reduce((a,b)=>a+b.er,0);
     const v = rows.reduce((a,b)=>a+b.val,0);
-    return { avg: v? (er/v) : 0, er, v };
+    return { avg: v ? (er/v) : 0, er, v };
   };
 
-  const rAprE = calc(eA), rAprB = calc(bA);
-  const rJanE = calc(eJ), rJanB = calc(bJ);
+  const rAA = calc(eA), rAB = calc(bA), rJA = calc(eJ), rJB = calc(bJ);
 
   const set = (idV, idS, res, std) => {
     const el = document.getElementById(idV);
     el.textContent = res.avg.toFixed(2);
-    el.style.color = res.avg >= std ? 'var(--green)' : 'var(--red-hi)';
+    el.style.color = res.avg >= std ? 'var(--green)' : 'var(--red)';
     document.getElementById(idS).textContent = `${res.er.toLocaleString()} / ${res.v.toLocaleString()}`;
   };
 
-  set('cv-ept1', 'cs-ept1', rAprE, EPT_STD);
-  set('cv-epb1', 'cs-epb1', rAprB, EPB_STD);
-  set('cv-ept2', 'cs-ept2', rJanE, EPT_STD);
-  set('cv-epb2', 'cs-epb2', rJanB, EPB_STD);
+  set('cv-ept1', 'cs-ept1', rAA, EPT_STD);
+  set('cv-epb1', 'cs-epb1', rAB, EPB_STD);
+  set('cv-ept2', 'cs-ept2', rJA, EPT_STD);
+  set('cv-epb2', 'cs-epb2', rJB, EPB_STD);
 }
 
 function initChart() {
   const ctx = document.getElementById('ch').getContext('2d');
-  
-  // Gradients
-  const gradApr = ctx.createLinearGradient(0, 0, 0, 400);
-  gradApr.addColorStop(0, 'rgba(214, 58, 47, 0.6)');
-  gradApr.addColorStop(1, 'rgba(214, 58, 47, 0.05)');
-
   chart = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: [],
       datasets: [
-        {
-          label: 'APR (Current)',
-          data: [],
-          backgroundColor: gradApr,
-          borderColor: 'var(--red)',
-          borderWidth: 1,
-          borderRadius: 4,
-          order: 2
-        },
-        {
-          label: 'JAN (Baseline)',
-          data: [],
-          type: 'line',
-          borderColor: 'rgba(136, 150, 164, 0.5)',
-          borderDash: [5, 5],
-          pointRadius: 2,
-          fill: false,
-          tension: 0.4,
-          order: 1
-        }
+        { label: 'APR 2026', data: [], backgroundColor: 'rgba(214, 58, 47, 0.7)', borderRadius: 4 },
+        { label: 'JAN 2026', data: [], type: 'line', borderColor: '#3b8cf0', backgroundColor: 'rgba(59, 140, 240, 0.1)', fill: true, tension: 0.4 }
       ]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#8896a4', font: { size: 10 } } } },
-      scales: {
-        x: { grid: { display: false }, ticks: { color: '#4a5568', font: { family: 'DM Mono', size: 9 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#4a5568' } }
-      }
+      responsive: true, maintainAspectRatio: false,
+      scales: { 
+        x: { grid: { display: false } },
+        y: { grid: { color: '#f0f0f0' } }
+      },
+      plugins: { legend: { position: 'bottom' } }
     }
   });
 }
@@ -407,17 +333,14 @@ function updateChart(apr, jan) {
   const agg = (data) => {
     const m = {};
     data.forEach(r => {
-      // Ambil tanggal saja (DD) untuk mapping sumbu X Harian
       const d = r.tgl.split('/')[0].padStart(2, '0');
       if(!m[d]) m[d] = {er:0, v:0};
       m[d].er += r.er; m[d].v += r.val;
     });
     return m;
   };
-
   const mA = agg(apr), mJ = agg(jan);
   const days = [...Array(31).keys()].map(i => (i+1).toString().padStart(2, '0'));
-
   chart.data.labels = days;
   chart.data.datasets[0].data = days.map(d => mA[d]?.v ? (mA[d].er/mA[d].v) : null);
   chart.data.datasets[1].data = days.map(d => mJ[d]?.v ? (mJ[d].er/mJ[d].v) : null);
@@ -427,7 +350,6 @@ function updateChart(apr, jan) {
 function buildSummaryTable(ept, epb) {
   const m = {};
   const getKey = r => grp === 'region' ? r.region : (grp === 'area' ? r.area : r.cabang);
-  
   ept.forEach(r => {
     const k = getKey(r);
     if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 };
@@ -438,46 +360,37 @@ function buildSummaryTable(ept, epb) {
     if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 };
     m[k].bEr += r.er; m[k].bVal += r.val;
   });
-
   return Object.values(m).map(i => ({
     label: i.label,
     ept: i.eVal ? (i.eEr/i.eVal) : 0,
     epb: i.bVal ? (i.bEr/i.bVal) : 0
-  })).sort((a,b) => b.ept - a.ept);
+  }));
 }
 
-function renderRanking(data) {
-  const top = data.slice(0, 10);
-  let h = `<table><thead><tr><th>Rank</th><th>${grp.toUpperCase()}</th><th class="r">EPT</th></tr></thead><tbody>`;
-  top.forEach((r, i) => {
+function renderRanking(data, targetId, sortKey, std) {
+  const sorted = [...data].sort((a,b) => b[sortKey] - a[sortKey]).slice(0, 10);
+  let h = `<table><thead><tr><th>#</th><th>${grp}</th><th class="r">Val</th></tr></thead><tbody>`;
+  sorted.forEach((r, i) => {
     h += `<tr>
-      <td><span class="rk ${i==0?'rk1':''}">${i+1}</span></td>
-      <td><b style="font-size:11px">${r.label}</b></td>
-      <td class="r">${bdg(r.ept, EPT_STD)}</td>
+      <td><span class="rk-circle">${i+1}</span></td>
+      <td style="font-weight:600">${r.label}</td>
+      <td class="r">${bdg(r[sortKey], std)}</td>
     </tr>`;
   });
-  document.getElementById('tRank').innerHTML = h + `</tbody></table>`;
+  document.getElementById(targetId).innerHTML = h + `</tbody></table>`;
 }
 
 function renderDetail(apr, jan) {
   const janMap = Object.fromEntries(jan.map(i => [i.label, i]));
-  let h = `<table><thead><tr>
-    <th>${grp.toUpperCase()}</th>
-    <th class="r">EPT APR</th><th class="r">EPB APR</th>
-    <th class="r sep">EPT JAN</th><th class="r">EPB JAN</th>
-    <th class="r sep">Gap EPT</th>
-  </tr></thead><tbody>`;
-
-  apr.forEach(a => {
-    const j = janMap[a.label] || { ept:0, epb:0 };
+  let h = `<table><thead><tr><th>${grp.toUpperCase()}</th><th class="r">EPT APR</th><th class="r">EPB APR</th><th class="r sep">Gap EPT</th></tr></thead><tbody>`;
+  apr.sort((a,b) => b.ept - a.ept).forEach(a => {
+    const j = janMap[a.label] || { ept:0 };
     const gap = a.ept - j.ept;
     h += `<tr>
       <td>${a.label}</td>
       <td class="r">${bdg(a.ept, EPT_STD)}</td>
       <td class="r">${bdg(a.epb, EPB_STD)}</td>
-      <td class="r sep" style="opacity:0.6">${j.ept.toFixed(2)}</td>
-      <td class="r" style="opacity:0.6">${j.epb.toFixed(2)}</td>
-      <td class="r sep" style="color:${gap>=0?'var(--green)':'var(--red-hi)'}">${gap >= 0 ? '+' : ''}${gap.toFixed(2)}</td>
+      <td class="r sep" style="color:${gap>=0?'var(--green)':'var(--red)'}; font-weight:700">${gap >= 0 ? '+' : ''}${gap.toFixed(2)}</td>
     </tr>`;
   });
   document.getElementById('tDet').innerHTML = h + `</tbody></table>`;
@@ -493,21 +406,6 @@ function setGroup(btn) {
   grp = btn.dataset.g;
   render();
 }
-
-function onFC(sel, actId) {
-  const active = sel.value !== '';
-  sel.style.borderColor = active ? 'var(--red)' : '';
-  const badge = document.getElementById(actId);
-  if (badge) {
-    badge.textContent = active ? sel.value : '';
-    badge.classList.toggle('show', active);
-  }
-}
-
-// Cascade filter minimalis
-function cscReg() { render(); }
-function cscCab() { render(); }
-function cscArea() { render(); }
 </script>
 </body>
 </html>
