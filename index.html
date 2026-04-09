@@ -16,11 +16,10 @@
   --gold:#e8a830;--gold-dim:rgba(232,168,48,0.10);
   --teal:#22c5a0;--teal-dim:rgba(34,197,160,0.10);
   --blue:#3b8cf0;--blue-dim:rgba(59,140,240,0.10);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.10);
   --amber:#f59e0b;
   --text:#e8ecf0;--text2:#8896a4;--text3:#4a5568;
-  --font:'Roboto',sans-serif;
-  --display:'Syne',sans-serif;
-  --mono:'DM Mono',monospace;
+  --font:'Roboto',sans-serif;--display:'Syne',sans-serif;--mono:'DM Mono',monospace;
   --r:10px;--r-lg:14px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -30,24 +29,21 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 button,select,input{font-family:var(--font)}
-
-body::before{
-  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--border2) 1px,transparent 1px),
     linear-gradient(90deg,var(--border2) 1px,transparent 1px);
   background-size:48px 48px;
-  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 20%,transparent 80%);
-}
+  mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,black 20%,transparent 80%);}
 
-/* HEADER */
-.hdr{position:sticky;top:0;z-index:200;background:rgba(10,12,15,0.88);
+/* ── HEADER ── */
+.hdr{position:sticky;top:0;z-index:200;background:rgba(10,12,15,.9);
   backdrop-filter:blur(16px);border-bottom:1px solid var(--border);
-  padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;}
+  padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between}
 .brand{display:flex;align-items:center;gap:9px}
 .brand-mark{width:26px;height:26px;border-radius:6px;background:var(--red);
   display:flex;align-items:center;justify-content:center;
   font-family:var(--display);font-weight:800;font-size:12px;color:#fff;
-  box-shadow:0 0 10px rgba(214,58,47,.35);}
+  box-shadow:0 0 10px rgba(214,58,47,.35)}
 .brand-name{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.3px}
 .brand-name em{color:var(--red-hi);font-style:normal}
 .hdr-right{display:flex;align-items:center;gap:10px}
@@ -56,15 +52,15 @@ body::before{
   font-size:10px;color:var(--teal);font-weight:500}
 .live span{width:5px;height:5px;background:var(--teal);border-radius:50%;animation:bl 2s ease infinite}
 @keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.mono-sm{font-family:var(--mono);font-size:11px;color:var(--text3)}
+.ts-sm{font-family:var(--mono);font-size:11px;color:var(--text3)}
 .btn-rf{background:var(--red-dim);border:1px solid rgba(214,58,47,.4);color:var(--red-hi);
   padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
 .btn-rf:hover{background:var(--red);color:#fff;border-color:var(--red)}
 
-/* MAIN */
-.main{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:18px 22px 56px}
+/* ── MAIN ── */
+.main{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:16px 22px 56px}
 
-/* FILTER BAR */
+/* ── FILTER BAR ── */
 .fbar{background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--r-lg);padding:14px 18px;margin-bottom:14px}
 .ftop{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
@@ -75,30 +71,43 @@ body::before{
 .gbb:hover{border-color:rgba(214,58,47,.4);color:var(--text)}
 .gbb.on{background:var(--red-dim);border-color:var(--red);color:var(--red-hi)}
 
-.fgrid{display:grid;grid-template-columns:repeat(5,1fr) auto;gap:10px;align-items:end}
-@media(max-width:1080px){.fgrid{grid-template-columns:repeat(3,1fr) auto}}
-@media(max-width:680px){.fgrid{grid-template-columns:1fr 1fr}}
-@media(max-width:400px){.fgrid{grid-template-columns:1fr}}
+/* filter grid: region, cabang, area, divisi, hke | bulan1, bulan2, apply */
+.fgrid{display:grid;
+  grid-template-columns:repeat(4,1fr) 100px repeat(2,120px) auto;
+  gap:10px;align-items:end}
+@media(max-width:1200px){.fgrid{grid-template-columns:repeat(4,1fr) 90px repeat(2,110px) auto}}
+@media(max-width:900px){.fgrid{grid-template-columns:repeat(3,1fr) 90px}}
+@media(max-width:600px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:380px){.fgrid{grid-template-columns:1fr}}
 
 .fi{display:flex;flex-direction:column;gap:3px}
 .fi-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.7px;
   color:var(--text3);display:flex;align-items:center;gap:5px}
-/* badge "aktif" muncul ketika filter dipilih */
 .f-act{display:none;font-size:9px;padding:1px 5px;border-radius:3px;
   background:var(--red-dim);color:var(--red-hi);border:1px solid rgba(214,58,47,.4);
-  text-transform:none;letter-spacing:0;font-weight:700;white-space:nowrap;max-width:90px;
-  overflow:hidden;text-overflow:ellipsis}
+  text-transform:none;letter-spacing:0;font-weight:700;white-space:nowrap;
+  max-width:80px;overflow:hidden;text-overflow:ellipsis}
 .f-act.show{display:inline-block}
-
-.fi select{background:var(--bg3);border:1px solid var(--border);color:var(--text);
+.fi select,.fi input[type=number]{background:var(--bg3);border:1px solid var(--border);color:var(--text);
   padding:7px 9px;border-radius:var(--r);font-size:12.5px;outline:none;width:100%;
   transition:border-color .15s,background-color .15s;appearance:none;-webkit-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234a5568' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
-.fi select:focus{border-color:var(--red)}
+.fi input[type=number]{background-image:none;padding-right:9px;-moz-appearance:textfield}
+.fi input[type=number]::-webkit-inner-spin-button{opacity:0}
+.fi select:focus,.fi input:focus{border-color:var(--red)}
 .fi select:disabled{opacity:.35;cursor:not-allowed}
-/* select dengan filter aktif — border + bg berbeda */
-.fi select.sel-active{border-color:rgba(214,58,47,.65);background-color:#1c1210}
+.fi select.sel-on{border-color:rgba(214,58,47,.65);background-color:#1c1210}
+
+/* HKE input highlight */
+.hke-wrap{position:relative}
+.hke-wrap input{padding-right:32px}
+.hke-unit{position:absolute;right:9px;top:50%;transform:translateY(-50%);
+  font-size:10px;color:var(--text3);pointer-events:none;font-family:var(--mono)}
+
+/* Bulan select dengan warna berbeda per bulan */
+.sel-b1.sel-on{background-color:#0f1820;border-color:rgba(59,140,240,.6)}
+.sel-b2.sel-on{background-color:#130f1e;border-color:rgba(167,139,250,.6)}
 
 .btn-ap{background:var(--red);border:none;color:#fff;padding:8px 18px;
   border-radius:var(--r);font-size:12.5px;font-weight:500;cursor:pointer;
@@ -106,54 +115,62 @@ body::before{
 .btn-ap:hover{background:var(--red-hi)}
 .btn-ap:disabled{opacity:.5;cursor:not-allowed}
 
-/* ACTIVE FILTER PILLS */
+/* ── PILLS ── */
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
 .pills:empty{margin-bottom:0}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;
   border:1px solid rgba(214,58,47,.35);background:var(--red-dim);
   font-size:11px;color:var(--red-hi);font-weight:500}
 .pill-k{color:var(--text3);font-size:10px;font-weight:400}
-.pill-x{cursor:pointer;opacity:.7;font-size:11px;line-height:1;margin-left:1px}
+.pill-x{cursor:pointer;opacity:.7;font-size:11px;margin-left:1px}
 .pill-x:hover{opacity:1}
+.pill-b1{border-color:rgba(59,140,240,.4);background:var(--blue-dim);color:var(--blue)}
+.pill-b1 .pill-k{color:rgba(59,140,240,.6)}
+.pill-b2{border-color:rgba(167,139,250,.4);background:var(--purple-dim);color:var(--purple)}
+.pill-b2 .pill-k{color:rgba(167,139,250,.6)}
 
-/* CARDS — 2 kolom */
-.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:14px}
+/* ── CARDS ── */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:420px){.cards{grid-template-columns:1fr}}
-
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
-  padding:16px 18px;position:relative;overflow:hidden;transition:transform .2s}
+  padding:15px 17px;position:relative;overflow:hidden;transition:transform .2s}
 .card:hover{transform:translateY(-2px)}
 .card-ac{position:absolute;top:0;left:0;right:0;height:2px}
-.c-red .card-ac{background:linear-gradient(90deg,var(--red),transparent)}
-.c-gold .card-ac{background:linear-gradient(90deg,var(--gold),transparent)}
-.card-std{position:absolute;top:13px;right:13px;font-size:9px;font-weight:500;
-  padding:2px 7px;border-radius:99px;font-family:var(--font)}
+.c-b1 .card-ac{background:linear-gradient(90deg,var(--blue),transparent)}
+.c-b2 .card-ac{background:linear-gradient(90deg,var(--purple),transparent)}
+.c-b1e .card-ac{background:linear-gradient(90deg,rgba(59,140,240,.6),transparent)}
+.c-b2e .card-ac{background:linear-gradient(90deg,rgba(167,139,250,.6),transparent)}
+.card-std{position:absolute;top:12px;right:12px;font-size:9px;font-weight:500;
+  padding:2px 7px;border-radius:99px}
 .std-ept{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
 .std-epb{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,140,240,.3)}
-.ci{font-size:17px;margin-bottom:9px;opacity:.7}
-/* label dan value pakai Roboto */
+.card-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
+  margin-bottom:6px;opacity:.6}
+.c-b1 .card-tag,.c-b1e .card-tag{color:var(--blue)}
+.c-b2 .card-tag,.c-b2e .card-tag{color:var(--purple)}
+.ci{font-size:16px;margin-bottom:7px;opacity:.7}
 .cl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;
-  color:var(--text2);margin-bottom:2px;font-family:'Roboto',sans-serif}
-.cv{font-family:'Roboto',sans-serif;font-weight:700;font-size:30px;
-  letter-spacing:-0.5px;line-height:1;transition:color .3s}
-.cs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:6px;line-height:1.5}
+  color:var(--text2);margin-bottom:2px}
+.cv{font-family:'Roboto',sans-serif;font-weight:700;font-size:28px;
+  letter-spacing:-.5px;line-height:1;transition:color .3s}
+.cs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:5px;line-height:1.5}
 
-/* LAYOUT ROW */
+/* ── LAYOUT ── */
 .crow{display:grid;grid-template-columns:3fr 2fr;gap:12px;margin-bottom:12px}
 @media(max-width:860px){.crow{grid-template-columns:1fr}}
-
-/* PANEL */
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
-.ph{padding:11px 16px 9px;border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ph{padding:10px 15px 8px;border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .pt{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:13px;font-weight:700}
 .dot{width:6px;height:6px;border-radius:50%}
 .dr{background:var(--red-hi)} .dg{background:var(--gold)} .dt{background:var(--teal)}
+.db{background:var(--blue)} .dp{background:var(--purple)}
 .pm{font-family:var(--mono);font-size:10px;color:var(--text3)}
-.pb{padding:13px 15px}
+.pb{padding:12px 14px}
 
-/* CHART */
-.cbox{position:relative;height:210px}
+/* ── CHART ── */
+.cbox{position:relative;height:220px}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;gap:7px;
   background:rgba(10,12,15,.55);backdrop-filter:blur(4px);border-radius:var(--r)}
@@ -162,43 +179,44 @@ body::before{
 @keyframes sp{to{transform:rotate(360deg)}}
 .ot{font-size:11px;color:var(--text3)}
 
-/* LEGEND */
+/* ── LEGEND ── */
 .legend{display:flex;gap:12px;flex-wrap:wrap;padding:7px 15px;
   border-top:1px solid var(--border2);font-size:10px;color:var(--text3)}
 .leg{display:flex;align-items:center;gap:4px}
-.leg-dot{width:8px;height:8px;border-radius:2px}
-.leg-green{background:var(--green)}
-.leg-red{background:var(--red-hi)}
-.leg-amber{background:var(--amber)}
+.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.leg-line{width:16px;height:2px;border-bottom:2px dashed;flex-shrink:0}
 
-/* TABLE */
-.tw{overflow:auto;max-height:290px}
+/* ── TABLE ── */
+.tw{overflow:auto;max-height:300px}
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{background:var(--bg3);padding:7px 11px;text-align:left;white-space:nowrap;
-  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.7px;
+thead th{background:var(--bg3);padding:7px 10px;text-align:left;white-space:nowrap;
+  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;
   color:var(--text3);position:sticky;top:0;z-index:1;border-bottom:1px solid var(--border)}
 th.r{text-align:right}
+/* Header grup bulan di tabel perbandingan */
+th.bh{text-align:center;font-size:9px}
+th.b1h{color:var(--blue)}
+th.b2h{color:var(--purple)}
 tbody tr{border-bottom:1px solid var(--border2);transition:background .1s}
 tbody tr:hover{background:rgba(255,255,255,.02)}
-td{padding:7px 11px;color:var(--text)}
+td{padding:7px 10px;color:var(--text)}
 td.r{text-align:right;font-family:var(--mono);font-size:11px}
+td.c{text-align:center;font-family:var(--mono);font-size:11px}
 
-/* BADGE dengan conditional formatting */
-.bdg{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;
-  font-family:var(--mono);font-size:11px;font-weight:500}
+/* ── BADGE conditional ── */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;
+  font-family:var(--mono);font-size:11px;font-weight:500;white-space:nowrap}
 .bdg-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-/* EPT */
 .ept-ok {background:rgba(34,197,94,.12);color:var(--green)}
-.ept-ok .bdg-dot{background:var(--green)}
+.ept-ok  .bdg-dot{background:var(--green)}
 .ept-low{background:rgba(240,68,56,.10);color:var(--red-hi)}
 .ept-low .bdg-dot{background:var(--red-hi)}
-/* EPB */
 .epb-ok {background:rgba(34,197,94,.12);color:var(--green)}
-.epb-ok .bdg-dot{background:var(--green)}
+.epb-ok  .bdg-dot{background:var(--green)}
 .epb-low{background:rgba(240,68,56,.10);color:var(--red-hi)}
 .epb-low .bdg-dot{background:var(--red-hi)}
 
-/* Ranking medal */
+/* ranking */
 .rk{display:inline-flex;align-items:center;justify-content:center;
   width:19px;height:19px;border-radius:50%;font-size:10px;font-weight:500;
   font-family:var(--mono);background:var(--bg3);border:1px solid var(--border);color:var(--text3)}
@@ -209,7 +227,15 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
 .nm{font-size:12px;font-weight:500;color:var(--text)}
 .ns{font-family:var(--mono);font-size:10px;color:var(--text3)}
 
-/* TOAST */
+/* separator kolom bulan */
+td.sep,th.sep{border-left:1px solid var(--border);padding-left:12px}
+
+/* diff badge */
+.diff-pos{color:var(--green);font-size:10px}
+.diff-neg{color:var(--red-hi);font-size:10px}
+.diff-neu{color:var(--text3);font-size:10px}
+
+/* ── TOAST ── */
 #toast{position:fixed;bottom:22px;left:50%;
   transform:translateX(-50%) translateY(56px);
   padding:8px 16px;border-radius:8px;background:var(--bg3);
@@ -221,6 +247,11 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
 #toast.err {color:var(--red-hi);border-color:rgba(240,68,56,.4)}
 #toast.warn{color:var(--gold);border-color:rgba(232,168,48,.4)}
 .empty{padding:32px 14px;text-align:center;color:var(--text3);font-size:12px}
+
+/* ── SECTION DIVIDER ── */
+.sec-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border2)}
 </style>
 </head>
 <body>
@@ -232,7 +263,7 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
   </div>
   <div class="hdr-right">
     <div class="live"><span></span>Live</div>
-    <span class="mono-sm" id="tsUp">—</span>
+    <span class="ts-sm" id="tsUp">—</span>
     <button class="btn-rf" onclick="loadAll()">↺ Refresh</button>
   </div>
 </header>
@@ -247,43 +278,57 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
         <button class="gbb"    data-g="region"   onclick="setGroup(this)">Region</button>
         <button class="gbb on" data-g="cabang"   onclick="setGroup(this)">Cabang</button>
         <button class="gbb"    data-g="area"     onclick="setGroup(this)">Area</button>
-        <button class="gbb"    data-g="salesman" onclick="setGroup(this)">Salesman</button>
       </div>
     </div>
     <div class="fgrid">
 
       <div class="fi">
         <span class="fi-lbl">Region <span class="f-act" id="act-fr"></span></span>
-        <select id="fr" onchange="onFChange(this,'act-fr'); cscReg()">
+        <select id="fr" onchange="onFC(this,'act-fr');cscReg()">
           <option value="">Semua Region</option>
         </select>
       </div>
 
       <div class="fi">
         <span class="fi-lbl">Cabang <span class="f-act" id="act-fc"></span></span>
-        <select id="fc" onchange="onFChange(this,'act-fc'); cscCab()">
+        <select id="fc" onchange="onFC(this,'act-fc');cscCab()">
           <option value="">Semua Cabang</option>
         </select>
       </div>
 
       <div class="fi">
         <span class="fi-lbl">Area <span class="f-act" id="act-fa"></span></span>
-        <select id="fa" onchange="onFChange(this,'act-fa'); cscArea()">
+        <select id="fa" onchange="onFC(this,'act-fa');cscArea()">
           <option value="">Semua Area</option>
         </select>
       </div>
 
       <div class="fi">
-        <span class="fi-lbl">Salesman <span class="f-act" id="act-fs"></span></span>
-        <select id="fs" onchange="onFChange(this,'act-fs')">
-          <option value="">Semua Salesman</option>
+        <span class="fi-lbl">Divisi Sales <span class="f-act" id="act-fdiv"></span></span>
+        <select id="fdiv" onchange="onFC(this,'act-fdiv')">
+          <option value="">Semua Divisi</option>
         </select>
       </div>
 
       <div class="fi">
-        <span class="fi-lbl">Divisi Sales <span class="f-act" id="act-fdiv"></span></span>
-        <select id="fdiv" onchange="onFChange(this,'act-fdiv')">
-          <option value="">Semua Divisi</option>
+        <span class="fi-lbl">Maks HKE</span>
+        <div class="hke-wrap">
+          <input type="number" id="fhke" min="1" max="31" placeholder="—" oninput="updatePills()">
+          <span class="hke-unit">HKE</span>
+        </div>
+      </div>
+
+      <div class="fi">
+        <span class="fi-lbl" style="color:var(--blue);opacity:.8">● Bulan 1</span>
+        <select id="fb1" class="sel-b1" onchange="onFC(this,''); updatePills(); syncBulanEPB()">
+          <option value="">Pilih Bulan</option>
+        </select>
+      </div>
+
+      <div class="fi">
+        <span class="fi-lbl" style="color:var(--purple);opacity:.8">● Bulan 2</span>
+        <select id="fb2" class="sel-b2" onchange="onFC(this,''); updatePills(); syncBulanEPB()">
+          <option value="">— (opsional)</option>
         </select>
       </div>
 
@@ -293,30 +338,49 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
     </div>
   </div>
 
-  <!-- ACTIVE FILTER PILLS -->
+  <!-- ACTIVE PILLS -->
   <div class="pills" id="pills"></div>
 
-  <!-- CARDS — 2 kolom (Hari Aktif & Salesman dihapus) -->
-  <div class="cards">
-    <div class="card c-red">
+  <!-- SECTION: CARDS -->
+  <div class="sec-label">Ringkasan</div>
+  <div class="cards" id="cardsWrap">
+    <!-- diisi JS -->
+    <div class="card c-b1">
       <div class="card-ac"></div>
       <span class="card-std std-ept">Std ≥ 7</span>
-      <div class="ci">📈</div>
-      <div class="cl">Rata-rata EPT</div>
-      <div class="cv" id="cv1">—</div>
-      <div class="cs" id="cs1">Eceran per Transaksi</div>
+      <div class="card-tag" id="ctag1">Bulan 1</div>
+      <div class="cl">EPT</div>
+      <div class="cv" id="cv-ept1">—</div>
+      <div class="cs" id="cs-ept1">—</div>
     </div>
-    <div class="card c-gold">
+    <div class="card c-b1e">
       <div class="card-ac"></div>
       <span class="card-std std-epb">Std ≥ 12</span>
-      <div class="ci">🏪</div>
-      <div class="cl">Rata-rata EPB</div>
-      <div class="cv" id="cv2">—</div>
-      <div class="cs" id="cs2">Eceran per Outlet Efektif</div>
+      <div class="card-tag" id="ctag2">Bulan 1</div>
+      <div class="cl">EPB</div>
+      <div class="cv" id="cv-epb1">—</div>
+      <div class="cs" id="cs-epb1">—</div>
+    </div>
+    <div class="card c-b2" id="card-ept2">
+      <div class="card-ac"></div>
+      <span class="card-std std-ept">Std ≥ 7</span>
+      <div class="card-tag" id="ctag3">Bulan 2</div>
+      <div class="cl">EPT</div>
+      <div class="cv" id="cv-ept2">—</div>
+      <div class="cs" id="cs-ept2">—</div>
+    </div>
+    <div class="card c-b2e" id="card-epb2">
+      <div class="card-ac"></div>
+      <span class="card-std std-epb">Std ≥ 12</span>
+      <div class="card-tag" id="ctag4">Bulan 2</div>
+      <div class="cl">EPB</div>
+      <div class="cv" id="cv-epb2">—</div>
+      <div class="cs" id="cs-epb2">—</div>
     </div>
   </div>
 
-  <!-- TREND + RANKING -->
+  <!-- SECTION: CHART + RANKING -->
+  <div class="sec-label">Trend EPT per Tanggal</div>
   <div class="crow">
     <div class="panel">
       <div class="ph">
@@ -331,71 +395,77 @@ td.r{text-align:right;font-family:var(--mono);font-size:11px}
           </div>
         </div>
       </div>
-      <div class="legend">
-        <span class="leg"><span class="leg-dot leg-green"></span>EPT ≥ 7 (tercapai)</span>
-        <span class="leg"><span class="leg-dot leg-red"></span>EPT &lt; 7 (di bawah standar)</span>
-        <span class="leg"><span class="leg-dot leg-amber"></span>Garis standar (7)</span>
+      <div class="legend" id="chartLegend">
+        <span class="leg"><span class="leg-dot" style="background:rgba(34,197,94,.75)"></span>EPT ≥ 7</span>
+        <span class="leg"><span class="leg-dot" style="background:rgba(240,68,56,.75)"></span>EPT &lt; 7</span>
+        <span class="leg"><span class="leg-line" style="border-color:rgba(245,158,11,.7)"></span>Std (7)</span>
       </div>
     </div>
+
     <div class="panel">
       <div class="ph">
         <div class="pt"><span class="dot dg"></span>Ranking EPT</div>
         <span class="pm" id="pmK">—</span>
       </div>
-      <div class="tw" id="tRank">
-        <div style="padding:32px;display:flex;justify-content:center"><div class="spinner"></div></div>
+      <div class="tw" style="max-height:320px" id="tRank">
+        <div style="padding:28px;display:flex;justify-content:center"><div class="spinner"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- DETAIL TABLE -->
+  <!-- SECTION: DETAIL TABLE -->
+  <div class="sec-label">Detail per Dimensi</div>
   <div class="panel">
     <div class="ph">
       <div class="pt"><span class="dot dt"></span><span id="dtTitle">Detail EPT &amp; EPB</span></div>
       <span class="pm" id="pmD">—</span>
     </div>
-    <div class="tw" style="max-height:400px" id="tDet">
-      <div style="padding:32px;display:flex;justify-content:center"><div class="spinner"></div></div>
+    <div class="tw" style="max-height:420px" id="tDet">
+      <div style="padding:28px;display:flex;justify-content:center"><div class="spinner"></div></div>
     </div>
     <div class="legend">
-      <span class="leg"><span class="leg-dot leg-green"></span>Tercapai (EPT≥7, EPB≥12)</span>
-      <span class="leg"><span class="leg-dot leg-red"></span>Di bawah standar</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--green)"></span>Tercapai</span>
+      <span class="leg"><span class="leg-dot" style="background:var(--red-hi)"></span>Di bawah standar</span>
+      <span class="leg" style="color:var(--text3);font-size:10px">▲▼ = selisih vs bulan lain</span>
     </div>
   </div>
 
 </div>
-
 <div id="toast"></div>
 
 <script>
-// ── CONFIG ────────────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════
 const SS_ID   = '1cRoZyleTMYqBhZmzr9OgQVRz29ZAyGYeTm_aieKAg3g';
-const API_KEY = 'AIzaSyBE8dSxs_7dLqHFF4M3W_mCoxmjnpBib1k';
-const R_EPT   = 'EPT!A:K';
-const R_EPB   = 'EPB!A:I';
+const API_KEY = 'AIzaSyBE8dSxs_7dLqHFF4M3W_mCoxmjnpBib1kY'; // ← ganti
+const R_EPT   = 'EPT!A:J';   // nama_region,cabang,kd_dist,area,hke,bulan,div_sls,tgl,total_eceran,total_ec
+const R_EPB   = 'EPB!A:J';   // nama_region,cabang,kd_dist,area,bulan,div_sls,tgl,total_eceran,total_effective_outlet (+ bulan)
 const EPT_STD = 7;
 const EPB_STD = 12;
 
-// ── STATE ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════
 let RAW = { ept: [], epb: [] };
 let grp = 'cabang';
 let chart = null;
 
-// meta filter untuk pill & cascade
-const FILTERS = [
+const FMETA = [
   { id:'fr',   actId:'act-fr',   label:'Region' },
   { id:'fc',   actId:'act-fc',   label:'Cabang' },
   { id:'fa',   actId:'act-fa',   label:'Area' },
-  { id:'fs',   actId:'act-fs',   label:'Salesman' },
   { id:'fdiv', actId:'act-fdiv', label:'Divisi' },
 ];
 
-// ── BOOT ──────────────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  BOOT
+// ═══════════════════════════════════════════════════
 addEventListener('DOMContentLoaded', () => { initChart(); loadAll(); });
 
 async function loadAll() {
   setBtn(true); ovShow(true);
-  toast('Mengambil data dari Sheets…', 'warn');
+  toast('Mengambil data…', 'warn');
   try {
     const [re, rb] = await Promise.all([fetchSh(R_EPT), fetchSh(R_EPB)]);
     RAW.ept = parseEPT(re);
@@ -405,14 +475,14 @@ async function loadAll() {
     setText('tsUp', new Date().toLocaleTimeString('id-ID'));
     toast(`${RAW.ept.length} baris EPT · ${RAW.epb.length} baris EPB`, 'ok');
   } catch(e) {
-    ovShow(false);
-    toast('Gagal: ' + e.message, 'err');
-    console.error(e);
+    ovShow(false); toast('Gagal: '+e.message,'err'); console.error(e);
   }
   setBtn(false);
 }
 
-// ── FETCH ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  FETCH
+// ═══════════════════════════════════════════════════
 async function fetchSh(range) {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SS_ID}/values/${encodeURIComponent(range)}?key=${API_KEY}`;
   const res = await fetch(url);
@@ -423,88 +493,122 @@ async function fetchSh(range) {
   return (await res.json()).values || [];
 }
 
-// ── PARSE ─────────────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  PARSE
+//  Sheet EPT : nama_region, cabang, kd_dist, area, hke, bulan, div_sls, tgl, total_eceran, total_ec
+//  Sheet EPB : nama_region, cabang, kd_dist, area, bulan, div_sls, tgl, total_eceran, total_effective_outlet
+// ═══════════════════════════════════════════════════
 function parseEPT(rows) {
   if (rows.length < 2) return [];
-  const h = rows[0].map(s => s.trim().toLowerCase());
-  return rows.slice(1).filter(r => r.some(Boolean)).map(r => {
-    const o = {}; h.forEach((k,i) => o[k] = (r[i]||'').trim());
+  const h = rows[0].map(s=>s.trim().toLowerCase());
+  return rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
+    const o={}; h.forEach((k,i)=>o[k]=(r[i]||'').trim());
     let tgl = o['tgl']||'';
     if (tgl.includes('/')) {
-      const p = tgl.split('/');
-      tgl = p[0].length===4 ? `${p[0]}-${pad(p[1])}-${pad(p[2])}` : `${p[2]}-${pad(p[1])}-${pad(p[0])}`;
+      const p=tgl.split('/');
+      tgl=p[0].length===4?`${p[0]}-${pad(p[1])}-${pad(p[2])}`:
+                          `${p[2]}-${pad(p[1])}-${pad(p[0])}`;
     }
     return {
-      region : o['nama_region']||'', cabang:o['cabang']||'',
-      area   : o['area']||'',        kd_sm :o['kd_salesman']||'',
-      nama_sm: o['nama_salesman']||'',div   :o['div_sls']||'',
-      tgl,
-      ec     : +o['total_ec']||0,    // total_ec
-      eceran : +o['total_eceran']||0 // total_eceran
+      region: o['nama_region']||'', cabang: o['cabang']||'',
+      kd_dist:o['kd_dist']||'',     area:   o['area']||'',
+      hke:    +o['hke']||0,         bulan:  o['bulan']||'',
+      div:    o['div_sls']||'',     tgl,
+      eceran: +o['total_eceran']||0,
+      ec:     +o['total_ec']||0,
     };
-  }).filter(r => r.tgl);
+  }).filter(r=>r.tgl);
 }
 
 function parseEPB(rows) {
   if (rows.length < 2) return [];
-  const h = rows[0].map(s => s.trim().toLowerCase());
-  return rows.slice(1).filter(r => r.some(Boolean)).map(r => {
-    const o = {}; h.forEach((k,i) => o[k] = (r[i]||'').trim());
+  const h = rows[0].map(s=>s.trim().toLowerCase());
+  return rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
+    const o={}; h.forEach((k,i)=>o[k]=(r[i]||'').trim());
     return {
-      region : o['nama_region']||'', cabang:o['cabang']||'',
-      area   : o['area']||'',        kd_sm :o['kd_salesman']||'',
-      nama_sm: o['nama_salesman']||'',div   :o['div_sls']||'',
-      eceran : +o['total_eceran']||0,          // total_eceran
-      eo     : +o['total_effective_outlet']||0  // total_effective_outlet
+      region: o['nama_region']||'', cabang: o['cabang']||'',
+      kd_dist:o['kd_dist']||'',     area:   o['area']||'',
+      bulan:  o['bulan']||'',       div:    o['div_sls']||'',
+      eceran: +o['total_eceran']||0,
+      eo:     +o['total_effective_outlet']||0,
     };
   });
 }
 
-// ── INIT FILTERS ──────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  INIT FILTERS
+// ═══════════════════════════════════════════════════
 function initFilters() {
   const all = [...RAW.ept, ...RAW.epb];
   fill('fr',   uniq(all.map(r=>r.region)));
   fill('fc',   uniq(all.map(r=>r.cabang)));
   fill('fa',   uniq(all.map(r=>r.area)));
-  fill('fs',   uniq(all.map(r=>r.nama_sm)));
   fill('fdiv', uniq(all.map(r=>r.div)));
+
+  // Bulan dari EPT union EPB
+  const bulans = uniq(all.map(r=>r.bulan).filter(Boolean));
+  fillBulan('fb1', bulans, '', 'Pilih Bulan');
+  fillBulan('fb2', bulans, '', '— (opsional)');
+
+  // default bulan terbaru sebagai bulan 1
+  if (bulans.length) {
+    document.getElementById('fb1').value = bulans[bulans.length-1];
+    syncBulanStyle();
+  }
 }
 
-// cascade
+function fillBulan(id, items, keep, placeholder) {
+  const el = document.getElementById(id);
+  const prev = keep || el.value;
+  el.innerHTML = `<option value="">${placeholder}</option>`;
+  items.forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v; o.textContent=v;
+    if(v===prev) o.selected=true;
+    el.appendChild(o);
+  });
+}
+
+function syncBulanEPB() { syncBulanStyle(); updatePills(); }
+function syncBulanStyle() {
+  const b1=g('fb1'), b2=g('fb2');
+  document.getElementById('fb1').classList.toggle('sel-on', !!b1);
+  document.getElementById('fb2').classList.toggle('sel-on', !!b2);
+}
+
+// Cascade
 function cscReg() {
   const reg=g('fr');
   const src=[...RAW.ept,...RAW.epb].filter(r=>!reg||r.region===reg);
-  fill('fc',  uniq(src.map(r=>r.cabang)),  g('fc'));
-  fill('fa',  uniq(src.map(r=>r.area)),    g('fa'));
-  fill('fs',  uniq(src.map(r=>r.nama_sm)), g('fs'));
-  fill('fdiv',uniq(src.map(r=>r.div)),     g('fdiv'));
+  fill('fc',  uniq(src.map(r=>r.cabang)), g('fc'));
+  fill('fa',  uniq(src.map(r=>r.area)),   g('fa'));
+  fill('fdiv',uniq(src.map(r=>r.div)),    g('fdiv'));
 }
 function cscCab() {
   const reg=g('fr'),cab=g('fc');
   const src=[...RAW.ept,...RAW.epb].filter(r=>(!reg||r.region===reg)&&(!cab||r.cabang===cab));
-  fill('fa',  uniq(src.map(r=>r.area)),    g('fa'));
-  fill('fs',  uniq(src.map(r=>r.nama_sm)), g('fs'));
-  fill('fdiv',uniq(src.map(r=>r.div)),     g('fdiv'));
+  fill('fa',  uniq(src.map(r=>r.area)), g('fa'));
+  fill('fdiv',uniq(src.map(r=>r.div)),  g('fdiv'));
 }
 function cscArea() {
   const reg=g('fr'),cab=g('fc'),area=g('fa');
   const src=[...RAW.ept,...RAW.epb].filter(r=>
     (!reg||r.region===reg)&&(!cab||r.cabang===cab)&&(!area||r.area===area));
-  fill('fs',  uniq(src.map(r=>r.nama_sm)), g('fs'));
-  fill('fdiv',uniq(src.map(r=>r.div)),     g('fdiv'));
+  fill('fdiv',uniq(src.map(r=>r.div)), g('fdiv'));
 }
 
-// ── VISUAL FEEDBACK FILTER AKTIF ─────────────────
-// Dipanggil setiap kali select berubah
-function onFChange(sel, actId) {
-  const badge = document.getElementById(actId);
+// ═══════════════════════════════════════════════════
+//  VISUAL FEEDBACK FILTER
+// ═══════════════════════════════════════════════════
+function onFC(sel, actId) {
   const active = sel.value !== '';
-  sel.classList.toggle('sel-active', active);
-  if (active) {
-    badge.textContent = sel.options[sel.selectedIndex].text;
-    badge.classList.add('show');
-  } else {
-    badge.classList.remove('show');
+  sel.classList.toggle('sel-on', active);
+  if (actId) {
+    const badge = document.getElementById(actId);
+    if (badge) {
+      badge.textContent = active ? sel.options[sel.selectedIndex].text : '';
+      badge.classList.toggle('show', active);
+    }
   }
   updatePills();
 }
@@ -512,276 +616,415 @@ function onFChange(sel, actId) {
 function updatePills() {
   const wrap = document.getElementById('pills');
   wrap.innerHTML = '';
-  FILTERS.forEach(({id, label}) => {
-    const el = document.getElementById(id);
-    if (!el || !el.value) return;
-    const val = el.options[el.selectedIndex].text;
-    const pill = document.createElement('span');
-    pill.className = 'pill';
-    pill.innerHTML =
-      `<span class="pill-k">${label}:</span> ${esc(val)}` +
-      `<span class="pill-x" onclick="clearFilter('${id}')">✕</span>`;
-    wrap.appendChild(pill);
+
+  // Filter biasa
+  FMETA.forEach(({id,label})=>{
+    const el=document.getElementById(id);
+    if (!el||!el.value) return;
+    addPill(wrap, label, el.options[el.selectedIndex].text, ()=>clearFilter(id), '');
   });
+
+  // HKE
+  const hke = document.getElementById('fhke').value;
+  if (hke) addPill(wrap, 'Maks HKE', hke+' HKE', ()=>{ document.getElementById('fhke').value=''; updatePills(); render(); }, '');
+
+  // Bulan 1
+  const b1 = g('fb1');
+  if (b1) addPill(wrap, 'Bulan 1', b1, ()=>{ document.getElementById('fb1').value=''; syncBulanEPB(); render(); }, 'pill-b1');
+
+  // Bulan 2
+  const b2 = g('fb2');
+  if (b2) addPill(wrap, 'Bulan 2', b2, ()=>{ document.getElementById('fb2').value=''; syncBulanEPB(); render(); }, 'pill-b2');
+}
+
+function addPill(wrap, key, val, onX, extraCls) {
+  const p = document.createElement('span');
+  p.className = 'pill ' + (extraCls||'');
+  p.innerHTML = `<span class="pill-k">${key}:</span> ${esc(val)} <span class="pill-x">✕</span>`;
+  p.querySelector('.pill-x').addEventListener('click', onX);
+  wrap.appendChild(p);
 }
 
 function clearFilter(id) {
-  const el = document.getElementById(id);
+  const el=document.getElementById(id);
   if (!el) return;
-  el.value = '';
-  const meta = FILTERS.find(f=>f.id===id);
-  if (meta) onFChange(el, meta.actId);
-  // re-cascade dari atas
+  el.value='';
+  const meta=FMETA.find(f=>f.id===id);
+  if (meta) onFC(el, meta.actId);
   if (id==='fr') cscReg();
   else if (id==='fc') cscCab();
   else if (id==='fa') cscArea();
   render();
 }
 
-// ── RENDER ────────────────────────────────────────
-function render() {
-  const reg=g('fr'),cab=g('fc'),area=g('fa'),sm=g('fs'),div=g('fdiv');
-  const fEPT = RAW.ept.filter(r=>
-    (!reg ||r.region ===reg) &&(!cab ||r.cabang ===cab) &&
-    (!area||r.area   ===area)&&(!sm  ||r.nama_sm===sm)  &&(!div||r.div===div));
-  const fEPB = RAW.epb.filter(r=>
-    (!reg ||r.region ===reg) &&(!cab ||r.cabang ===cab) &&
-    (!area||r.area   ===area)&&(!sm  ||r.nama_sm===sm)  &&(!div||r.div===div));
+// ═══════════════════════════════════════════════════
+//  CORE FILTER FUNCTION
+// ═══════════════════════════════════════════════════
+function baseFilter(arr, {reg,cab,area,div}) {
+  return arr.filter(r=>
+    (!reg  || r.region===reg)  &&
+    (!cab  || r.cabang===cab)  &&
+    (!area || r.area  ===area) &&
+    (!div  || r.div   ===div)
+  );
+}
 
-  renderCards(fEPT, fEPB);
-  renderChart(fEPT);
-  const tbl = buildTable(fEPT, fEPB);
-  renderRank(tbl);
-  renderDet(tbl);
+function getEPT(bulan, maxHKE) {
+  const reg=g('fr'),cab=g('fc'),area=g('fa'),div=g('fdiv');
+  let rows = baseFilter(RAW.ept, {reg,cab,area,div});
+  if (bulan) rows = rows.filter(r=>r.bulan===bulan);
+  if (maxHKE) rows = rows.filter(r=>r.hke<=maxHKE);
+  return rows;
+}
+
+function getEPB(bulan) {
+  const reg=g('fr'),cab=g('fc'),area=g('fa'),div=g('fdiv');
+  let rows = baseFilter(RAW.epb, {reg,cab,area,div});
+  if (bulan) rows = rows.filter(r=>r.bulan===bulan);
+  return rows;
+}
+
+// ═══════════════════════════════════════════════════
+//  RENDER MAIN
+// ═══════════════════════════════════════════════════
+function render() {
+  const b1 = g('fb1'), b2 = g('fb2');
+  const maxHKE = +document.getElementById('fhke').value || null;
+
+  const ept1 = getEPT(b1, maxHKE);
+  const epb1 = getEPB(b1);
+  const ept2 = b2 ? getEPT(b2, maxHKE) : [];
+  const epb2 = b2 ? getEPB(b2) : [];
+
+  renderCards(ept1, epb1, ept2, epb2, b1, b2, maxHKE);
+  renderChart(ept1, ept2, b1, b2);
+  const tbl1 = buildTable(ept1, epb1);
+  const tbl2 = b2 ? buildTable(ept2, epb2) : null;
+  renderRank(tbl1, b1);
+  renderDet(tbl1, tbl2, b1, b2);
   ovShow(false);
 }
 
-// ── CARDS ─────────────────────────────────────────
-// EPT  = SUM(total_eceran) / SUM(total_ec)
-// EPB  = SUM(total_eceran) / SUM(total_effective_outlet)
-function renderCards(ept, epb) {
-  const totEc  = sum(ept,'ec'),     totEr  = sum(ept,'eceran');
-  const totEO  = sum(epb,'eo'),     totErB = sum(epb,'eceran');
-  const avgEPT = totEc  > 0 ? r2(totEr  / totEc)  : 0;
-  const avgEPB = totEO  > 0 ? r2(totErB / totEO)  : 0;
-
-  setText('cv1', f2(avgEPT));
-  setText('cs1', `${fN(totEr)} eceran ÷ ${fN(totEc)} EC`);
-  setText('cv2', f2(avgEPB));
-  setText('cs2', `${fN(totErB)} eceran ÷ ${fN(totEO)} EO`);
-
-  // Warna nilai card sesuai threshold
-  const e1 = document.getElementById('cv1');
-  const e2 = document.getElementById('cv2');
-  if (e1) e1.style.color = avgEPT >= EPT_STD ? 'var(--green)' : 'var(--red-hi)';
-  if (e2) e2.style.color = avgEPB >= EPB_STD ? 'var(--green)' : 'var(--red-hi)';
+// ═══════════════════════════════════════════════════
+//  CARDS
+// ═══════════════════════════════════════════════════
+function calcEPT(rows) {
+  const ec=sum(rows,'ec'), er=sum(rows,'eceran');
+  return { val: ec>0 ? r2(er/ec) : 0, er, ec };
+}
+function calcEPB(rows) {
+  const eo=sum(rows,'eo'), er=sum(rows,'eceran');
+  return { val: eo>0 ? r2(er/eo) : 0, er, eo };
 }
 
-// ── CHART (bar dengan warna kondisional + garis std) ──
+function renderCards(ept1,epb1,ept2,epb2,b1,b2,maxHKE) {
+  const e1=calcEPT(ept1), b1e=calcEPB(epb1);
+  const e2=calcEPT(ept2), b2e=calcEPB(epb2);
+  const hkeTxt = maxHKE ? ` s/d HKE-${maxHKE}` : '';
+
+  setText('ctag1', b1||(maxHKE?'Filtered':'Semua'));
+  setText('ctag2', b1||(maxHKE?'Filtered':'Semua'));
+  setText('ctag3', b2||'Bulan 2');
+  setText('ctag4', b2||'Bulan 2');
+
+  setCard('cv-ept1', 'cs-ept1', e1.val, e1, EPT_STD, true, hkeTxt);
+  setCard('cv-epb1', 'cs-epb1', b1e.val, b1e, EPB_STD, false, '');
+
+  const show2 = !!b2;
+  document.getElementById('card-ept2').style.opacity = show2 ? '1' : '0.25';
+  document.getElementById('card-epb2').style.opacity = show2 ? '1' : '0.25';
+  setCard('cv-ept2', 'cs-ept2', e2.val, e2, EPT_STD, true, hkeTxt);
+  setCard('cv-epb2', 'cs-epb2', b2e.val, b2e, EPB_STD, false, '');
+}
+
+function setCard(cvId, csId, val, d, std, isEPT, extra) {
+  const elV=document.getElementById(cvId), elS=document.getElementById(csId);
+  if (!elV) return;
+  elV.textContent = f2(val);
+  elV.style.color = val>=std ? 'var(--green)' : 'var(--red-hi)';
+  if (elS) {
+    elS.textContent = isEPT
+      ? `${fN(d.er)} ÷ ${fN(d.ec)} EC${extra}`
+      : `${fN(d.er)} ÷ ${fN(d.eo)} EO`;
+  }
+}
+
+// ═══════════════════════════════════════════════════
+//  CHART — 2 garis (bulan1 bar + bulan2 line) + garis std
+// ═══════════════════════════════════════════════════
 function initChart() {
   const ctx = document.getElementById('ch').getContext('2d');
   chart = new Chart(ctx, {
     type: 'bar',
     data: { labels: [], datasets: [
-      {
-        label: 'EPT', data: [],
-        backgroundColor: [],
-        borderRadius: 3,
-        borderSkipped: false,
-        order: 2,
-      },
-      {
-        label: `Standar (${EPT_STD})`,
-        data: [], type: 'line',
-        borderColor: 'rgba(245,158,11,.7)',
-        borderWidth: 1.5,
-        borderDash: [5,4],
-        pointRadius: 0,
-        fill: false,
-        tension: 0,
-        order: 1,
-      }
+      { label:'EPT Bulan 1', data:[], backgroundColor:[], borderRadius:3, borderSkipped:false, order:3 },
+      { label:'EPT Bulan 2', data:[], type:'line',
+        borderColor:'rgba(167,139,250,.8)', backgroundColor:'rgba(167,139,250,.08)',
+        borderWidth:2, pointRadius:3, pointBackgroundColor:'rgba(167,139,250,.9)',
+        fill:false, tension:.3, order:2 },
+      { label:'Standar', data:[], type:'line',
+        borderColor:'rgba(245,158,11,.65)', borderWidth:1.5, borderDash:[5,4],
+        pointRadius:0, fill:false, tension:0, order:1 }
     ]},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode:'index', intersect:false },
-      plugins: {
-        legend: { display:false },
-        tooltip: {
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
           backgroundColor:'#181d24',borderColor:'rgba(255,255,255,.07)',borderWidth:1,
           titleColor:'#8896a4',bodyColor:'#e8ecf0',padding:9,
-          callbacks: {
-            label: c => c.datasetIndex===0
-              ? ` EPT: ${f2(c.parsed.y)}  ${c.parsed.y >= EPT_STD ? '✓' : '↓'}`
-              : ` Std: ${EPT_STD}`
+          callbacks:{
+            label: c=>{
+              if (c.datasetIndex===2) return ` Std: ${EPT_STD}`;
+              const sym = c.parsed.y>=EPT_STD?'✓':'↓';
+              return ` ${c.dataset.label}: ${f2(c.parsed.y)} ${sym}`;
+            }
           }
         }
       },
-      scales: {
-        x:{ ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'},maxTicksLimit:14},
-            grid:{color:'rgba(255,255,255,.04)'} },
-        y:{ ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'}},
-            grid:{color:'rgba(255,255,255,.04)'} }
+      scales:{
+        x:{ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'},maxTicksLimit:16},grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'}},grid:{color:'rgba(255,255,255,.04)'}}
       }
     }
   });
 }
 
-function renderChart(ept) {
-  const map = {};
-  ept.forEach(r => {
-    if (!map[r.tgl]) map[r.tgl] = { ec:0, er:0 };
-    map[r.tgl].ec += r.ec;
-    map[r.tgl].er += r.eceran;
-  });
-  const dates = Object.keys(map).sort();
-  // EPT per tanggal = SUM(eceran) / SUM(ec) pada tanggal itu
-  const vals   = dates.map(d => map[d].ec > 0 ? r2(map[d].er / map[d].ec) : 0);
-  const colors = vals.map(v => v >= EPT_STD ? 'rgba(34,197,94,.75)' : 'rgba(240,68,56,.75)');
+function renderChart(ept1, ept2, b1, b2) {
+  // Aggregate per tanggal untuk masing-masing bulan
+  const agg = rows => {
+    const m={};
+    rows.forEach(r=>{ if(!m[r.tgl])m[r.tgl]={ec:0,er:0}; m[r.tgl].ec+=r.ec; m[r.tgl].er+=r.eceran; });
+    return m;
+  };
 
-  chart.data.labels = dates.map(d => {
-    const dt = new Date(d + 'T00:00:00');
-    return dt.toLocaleDateString('id-ID', { day:'2-digit', month:'short' });
+  const m1 = agg(ept1);
+  const m2 = b2 ? agg(ept2) : {};
+
+  // x-axis: gabungan tanggal dari kedua bulan
+  const allDates = uniq([...Object.keys(m1), ...Object.keys(m2)]).sort();
+
+  const vals1  = allDates.map(d=>m1[d]?.ec>0 ? r2(m1[d].er/m1[d].ec) : null);
+  const vals2  = allDates.map(d=>m2[d]?.ec>0 ? r2(m2[d].er/m2[d].ec) : null);
+  const colors1 = vals1.map(v=>v===null?'transparent':v>=EPT_STD?'rgba(34,197,94,.75)':'rgba(240,68,56,.75)');
+
+  chart.data.labels = allDates.map(d=>{
+    const dt=new Date(d+'T00:00:00');
+    return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short'});
   });
-  chart.data.datasets[0].data = vals;
-  chart.data.datasets[0].backgroundColor = colors;
-  chart.data.datasets[1].data = dates.map(() => EPT_STD);
+  chart.data.datasets[0].data = vals1;
+  chart.data.datasets[0].backgroundColor = colors1;
+  chart.data.datasets[0].label = `EPT ${b1||'Bulan 1'}`;
+  chart.data.datasets[1].data = b2 ? vals2 : [];
+  chart.data.datasets[1].label = `EPT ${b2}`;
+  chart.data.datasets[2].data = allDates.map(()=>EPT_STD);
   chart.update('none');
-  if (dates.length >= 2) setText('pmR', dates[0]+' – '+dates[dates.length-1]);
+
+  // update legend chart
+  const leg = document.getElementById('chartLegend');
+  if (leg) {
+    let l = `
+      <span class="leg"><span class="leg-dot" style="background:rgba(34,197,94,.75)"></span>EPT ≥ 7</span>
+      <span class="leg"><span class="leg-dot" style="background:rgba(240,68,56,.75)"></span>EPT &lt; 7</span>
+      <span class="leg"><span class="leg-line" style="border-color:rgba(245,158,11,.7)"></span>Std (7)</span>`;
+    if (b2) l += `<span class="leg"><span class="leg-dot" style="background:var(--purple);border-radius:50%"></span>${esc(b2)} (garis)</span>`;
+    leg.innerHTML = l;
+  }
+  if (allDates.length>=2) setText('pmR', allDates[0]+' – '+allDates[allDates.length-1]);
 }
 
-// ── BUILD TABLE ───────────────────────────────────
+// ═══════════════════════════════════════════════════
+//  BUILD TABLE
+// ═══════════════════════════════════════════════════
 function kfn(r) {
-  if (grp==='region')   return { k:r.region,  label:r.region,  sub:'' };
-  if (grp==='area')     return { k:r.area,    label:r.area,    sub:'' };
-  if (grp==='salesman') return { k:r.kd_sm,   label:r.nama_sm, sub:r.kd_sm };
-  return { k:r.cabang, label:r.cabang, sub:'' };
+  if (grp==='region') return {k:r.region, label:r.region, sub:r.kd_dist};
+  if (grp==='area')   return {k:r.area,   label:r.area,   sub:r.kd_dist};
+  return {k:r.cabang, label:r.cabang, sub:r.kd_dist};
 }
 
 function buildTable(ept, epb) {
-  const em = {}, bm = {};
-  ept.forEach(r => {
-    const { k, label, sub } = kfn(r);
-    if (!em[k]) em[k] = { label, sub, ec:0, er:0 };
-    em[k].ec += r.ec;
-    em[k].er += r.eceran;
+  const em={},bm={};
+  ept.forEach(r=>{
+    const {k,label,sub}=kfn(r);
+    if (!em[k]) em[k]={label,sub,ec:0,er:0};
+    em[k].ec+=r.ec; em[k].er+=r.eceran;
   });
-  epb.forEach(r => {
-    const { k } = kfn(r);
-    if (!bm[k]) bm[k] = { eo:0, er:0 };
-    bm[k].eo += r.eo;
-    bm[k].er += r.eceran;
+  epb.forEach(r=>{
+    const {k}=kfn(r);
+    if (!bm[k]) bm[k]={eo:0,er:0};
+    bm[k].eo+=r.eo; bm[k].er+=r.eceran;
   });
-  const keys = new Set([...Object.keys(em), ...Object.keys(bm)]);
-  return [...keys].map(k => {
-    const e = em[k] || { label:k, sub:'', ec:0, er:0 };
-    const b = bm[k] || { eo:0, er:0 };
+  const keys=new Set([...Object.keys(em),...Object.keys(bm)]);
+  return [...keys].map(k=>{
+    const e=em[k]||{label:k,sub:'',ec:0,er:0};
+    const b=bm[k]||{eo:0,er:0};
     return {
       key:k, label:e.label, sub:e.sub,
-      ept: e.ec > 0 ? r2(e.er/e.ec) : 0,  // EPT = total_eceran / total_ec
-      epb: b.eo > 0 ? r2(b.er/b.eo) : 0,  // EPB = total_eceran / total_effective_outlet
-      er_e:e.er, ec:e.ec,
-      er_b:b.er, eo:b.eo,
+      ept: e.ec>0 ? r2(e.er/e.ec) : 0,
+      epb: b.eo>0 ? r2(b.er/b.eo) : 0,
+      er_e:e.er, ec:e.ec, er_b:b.er, eo:b.eo,
     };
-  }).sort((a,b) => b.ept - a.ept);
+  }).sort((a,b)=>b.ept-a.ept);
 }
 
-// Helper badge EPT & EPB kondisional
-const bdgEPT = v => {
-  const c = v >= EPT_STD ? 'ept-ok' : 'ept-low';
-  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
-};
-const bdgEPB = v => {
-  const c = v >= EPB_STD ? 'epb-ok' : 'epb-low';
-  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
-};
-
-// ── RANKING ───────────────────────────────────────
-function renderRank(rows) {
-  const top = rows.slice(0, 10);
-  setText('pmK', 'top '+top.length+' per '+grp);
-  if (!top.length) { document.getElementById('tRank').innerHTML='<div class="empty">Tidak ada data</div>'; return; }
-  let h = `<table><thead><tr><th>#</th><th>Nama</th><th class="r">EPT</th><th class="r">EPB</th></tr></thead><tbody>`;
-  top.forEach((r,i) => {
-    const rc = i<3 ? `rk${i+1}` : '';
-    h += `<tr>
+// ═══════════════════════════════════════════════════
+//  RENDER RANKING
+// ═══════════════════════════════════════════════════
+function renderRank(rows, b1) {
+  const top=rows.slice(0,10);
+  setText('pmK','top '+top.length+' per '+grp+(b1?' · '+b1:''));
+  if (!top.length) {
+    document.getElementById('tRank').innerHTML='<div class="empty">Tidak ada data</div>'; return;
+  }
+  let h=`<table><thead><tr><th>#</th><th>${cap(grp)}</th>
+    <th class="r">EPT</th><th class="r">EPB</th></tr></thead><tbody>`;
+  top.forEach((r,i)=>{
+    const rc=i<3?`rk${i+1}`:'';
+    h+=`<tr>
       <td><span class="rk ${rc}">${i+1}</span></td>
       <td><div class="nc"><span class="nm">${esc(r.label)}</span>
         ${r.sub?`<span class="ns">${esc(r.sub)}</span>`:''}</div></td>
       <td class="r">${bdgEPT(r.ept)}</td>
-      <td class="r">${bdgEPB(r.epb)}</td>
-    </tr>`;
+      <td class="r">${bdgEPB(r.epb)}</td></tr>`;
   });
-  document.getElementById('tRank').innerHTML = h+'</tbody></table>';
+  document.getElementById('tRank').innerHTML=h+'</tbody></table>';
 }
 
-// ── DETAIL ────────────────────────────────────────
-function renderDet(rows) {
-  const dim = grp.charAt(0).toUpperCase()+grp.slice(1);
-  setText('dtTitle', `Detail EPT & EPB — per ${dim}`);
-  setText('pmD', rows.length+' baris');
-  if (!rows.length) { document.getElementById('tDet').innerHTML='<div class="empty">Tidak ada data</div>'; return; }
-  let h = `<table><thead><tr>
-    <th>${dim}</th>
-    <th class="r">EPT <span style="opacity:.5;font-weight:400">std≥${EPT_STD}</span></th>
-    <th class="r">Total Eceran</th>
-    <th class="r">Total EC</th>
-    <th class="r">EPB <span style="opacity:.5;font-weight:400">std≥${EPB_STD}</span></th>
-    <th class="r">Total Eceran</th>
-    <th class="r">Total EO</th>
-  </tr></thead><tbody>`;
-  rows.forEach(r => {
-    h += `<tr>
-      <td><div class="nc"><span class="nm">${esc(r.label)}</span>
-        ${r.sub?`<span class="ns">${esc(r.sub)}</span>`:''}</div></td>
-      <td class="r">${bdgEPT(r.ept)}</td>
-      <td class="r">${fN(r.er_e)}</td>
-      <td class="r">${fN(r.ec)}</td>
-      <td class="r">${bdgEPB(r.epb)}</td>
-      <td class="r">${fN(r.er_b)}</td>
-      <td class="r">${fN(r.eo)}</td>
-    </tr>`;
-  });
-  document.getElementById('tDet').innerHTML = h+'</tbody></table>';
+// ═══════════════════════════════════════════════════
+//  RENDER DETAIL (dengan perbandingan bulan jika ada)
+// ═══════════════════════════════════════════════════
+function renderDet(tbl1, tbl2, b1, b2) {
+  const dim = cap(grp);
+  const hkeTxt = document.getElementById('fhke').value ? ` (s/d HKE-${document.getElementById('fhke').value})` : '';
+  setText('dtTitle', `Detail per ${dim}`);
+  setText('pmD', tbl1.length+' baris');
+
+  if (!tbl1.length) {
+    document.getElementById('tDet').innerHTML='<div class="empty">Tidak ada data</div>'; return;
+  }
+
+  const hasCmp = !!tbl2;
+
+  if (!hasCmp) {
+    // tabel biasa
+    let h=`<table><thead><tr>
+      <th>${dim}</th>
+      <th class="r">EPT${hkeTxt} <span style="opacity:.5;font-weight:400">std≥${EPT_STD}</span></th>
+      <th class="r">Total Eceran (EPT)</th><th class="r">Total EC</th>
+      <th class="r">EPB <span style="opacity:.5;font-weight:400">std≥${EPB_STD}</span></th>
+      <th class="r">Total Eceran (EPB)</th><th class="r">Total EO</th>
+    </tr></thead><tbody>`;
+    tbl1.forEach(r=>{
+      h+=`<tr>
+        <td><div class="nc"><span class="nm">${esc(r.label)}</span>
+          ${r.sub?`<span class="ns">${esc(r.sub)}</span>`:''}</div></td>
+        <td class="r">${bdgEPT(r.ept)}</td>
+        <td class="r">${fN(r.er_e)}</td><td class="r">${fN(r.ec)}</td>
+        <td class="r">${bdgEPB(r.epb)}</td>
+        <td class="r">${fN(r.er_b)}</td><td class="r">${fN(r.eo)}</td></tr>`;
+    });
+    document.getElementById('tDet').innerHTML=h+'</tbody></table>';
+  } else {
+    // tabel perbandingan dua bulan
+    // build lookup tbl2
+    const m2={};
+    tbl2.forEach(r=>m2[r.key]=r);
+    const keys=new Set([...tbl1.map(r=>r.key),...tbl2.map(r=>r.key)]);
+    const rows=[...keys].map(k=>{
+      const a=tbl1.find(r=>r.key===k)||{key:k,label:k,sub:'',ept:0,epb:0,er_e:0,ec:0,er_b:0,eo:0};
+      const b=m2[k]||{ept:0,epb:0,er_e:0,ec:0,er_b:0,eo:0};
+      return {label:a.label,sub:a.sub,a,b};
+    }).sort((x,y)=>y.a.ept-x.a.ept);
+
+    let h=`<table><thead>
+      <tr>
+        <th rowspan="2">${dim}</th>
+        <th class="r bh b1h" colspan="2">${esc(b1)} ${hkeTxt}</th>
+        <th class="r bh b2h sep" colspan="2">${esc(b2)} ${hkeTxt}</th>
+        <th class="r bh sep" rowspan="2">Δ EPT</th>
+        <th class="r bh sep" rowspan="2">Δ EPB</th>
+      </tr>
+      <tr>
+        <th class="r">EPT</th><th class="r">EPB</th>
+        <th class="r sep">EPT</th><th class="r">EPB</th>
+      </tr>
+    </thead><tbody>`;
+
+    rows.forEach(({label,sub,a,b})=>{
+      const dEPT = r2(a.ept - b.ept);
+      const dEPB = r2(a.epb - b.epb);
+      const diffEPT = dEPT>0?`<span class="diff-pos">▲${f2(Math.abs(dEPT))}</span>`:
+                      dEPT<0?`<span class="diff-neg">▼${f2(Math.abs(dEPT))}</span>`:
+                              `<span class="diff-neu">—</span>`;
+      const diffEPB = dEPB>0?`<span class="diff-pos">▲${f2(Math.abs(dEPB))}</span>`:
+                      dEPB<0?`<span class="diff-neg">▼${f2(Math.abs(dEPB))}</span>`:
+                              `<span class="diff-neu">—</span>`;
+      h+=`<tr>
+        <td><div class="nc"><span class="nm">${esc(label)}</span>
+          ${sub?`<span class="ns">${esc(sub)}</span>`:''}</div></td>
+        <td class="r">${bdgEPT(a.ept)}</td>
+        <td class="r">${bdgEPB(a.epb)}</td>
+        <td class="r sep">${bdgEPT(b.ept)}</td>
+        <td class="r">${bdgEPB(b.epb)}</td>
+        <td class="r sep">${diffEPT}</td>
+        <td class="r">${diffEPB}</td>
+      </tr>`;
+    });
+    document.getElementById('tDet').innerHTML=h+'</tbody></table>';
+  }
 }
 
-// ── UTILS ─────────────────────────────────────────
-function setGroup(btn) {
+// ═══════════════════════════════════════════════════
+//  BADGE HELPERS
+// ═══════════════════════════════════════════════════
+const bdgEPT = v=>{
+  const c=v>=EPT_STD?'ept-ok':'ept-low';
+  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
+};
+const bdgEPB = v=>{
+  const c=v>=EPB_STD?'epb-ok':'epb-low';
+  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
+};
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function setGroup(btn){
   document.querySelectorAll('.gbb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); grp = btn.dataset.g;
+  btn.classList.add('on'); grp=btn.dataset.g;
   if (RAW.ept.length) render();
 }
-const g       = id => (document.getElementById(id)?.value||'').trim();
-const setText = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
-const sum     = (arr,k) => arr.reduce((a,r)=>a+(r[k]||0),0);
-const r2      = n => Math.round(n*100)/100;
-const f2      = n => (+n).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
-const fN      = n => (+n).toLocaleString('id-ID');
-const uniq    = a => [...new Set(a.filter(Boolean))].sort();
-const esc     = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const pad     = s => String(s).padStart(2,'0');
-function setBtn(on) { document.getElementById('btnAp').disabled = on; }
-function ovShow(on) { document.getElementById('ov').style.display = on ? 'flex' : 'none'; }
+const g       = id=>(document.getElementById(id)?.value||'').trim();
+const setText = (id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
+const sum     = (arr,k)=>arr.reduce((a,r)=>a+(r[k]||0),0);
+const r2      = n=>Math.round(n*100)/100;
+const f2      = n=>(+n).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fN      = n=>(+n).toLocaleString('id-ID');
+const uniq    = a=>[...new Set(a.filter(Boolean))].sort();
+const esc     = s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const pad     = s=>String(s).padStart(2,'0');
+const cap     = s=>s.charAt(0).toUpperCase()+s.slice(1);
+function setBtn(on){ document.getElementById('btnAp').disabled=on; }
+function ovShow(on){ document.getElementById('ov').style.display=on?'flex':'none'; }
 
-function fill(id, items, keep) {
-  const el = document.getElementById(id);
-  const prev = keep !== undefined ? keep : el.value;
-  const ph = el.options[0].text;
-  el.innerHTML = `<option value="">${ph}</option>`;
-  items.forEach(v => {
-    const o = document.createElement('option');
-    o.value = v; o.textContent = v;
-    if (v === prev) o.selected = true;
-    el.appendChild(o);
+function fill(id,items,keep){
+  const el=document.getElementById(id);
+  const prev=keep!==undefined?keep:el.value;
+  const ph=el.options[0].text;
+  el.innerHTML=`<option value="">${ph}</option>`;
+  items.forEach(v=>{
+    const o=document.createElement('option');
+    o.value=v;o.textContent=v;if(v===prev)o.selected=true;el.appendChild(o);
   });
-  el.disabled = items.length === 0;
+  el.disabled=items.length===0;
 }
 
 let _t;
-function toast(msg, type='ok') {
-  const el = document.getElementById('toast');
-  el.textContent = msg; el.className=`show ${type}`;
-  clearTimeout(_t); _t = setTimeout(()=>el.className='', 3000);
+function toast(msg,type='ok'){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className=`show ${type}`;
+  clearTimeout(_t); _t=setTimeout(()=>el.className='',3000);
 }
 </script>
 </body>
