@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EPT & EPB Monitor</title>
+<title>EPT & EPB Monitor - APR vs JAN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Syne:wght@700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -28,7 +28,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-button,select,input{font-family:var(--font)}
+
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(var(--border2) 1px,transparent 1px),
     linear-gradient(90deg,var(--border2) 1px,transparent 1px);
@@ -47,15 +47,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .brand-name{font-family:var(--display);font-weight:700;font-size:14px;letter-spacing:-.3px}
 .brand-name em{color:var(--red-hi);font-style:normal}
 .hdr-right{display:flex;align-items:center;gap:10px}
-.live{display:flex;align-items:center;gap:4px;padding:3px 9px;border-radius:99px;
-  border:1px solid rgba(34,197,160,.3);background:rgba(34,197,160,.06);
-  font-size:10px;color:var(--teal);font-weight:500}
-.live span{width:5px;height:5px;background:var(--teal);border-radius:50%;animation:bl 2s ease infinite}
-@keyframes bl{0%,100%{opacity:1}50%{opacity:.3}}
-.ts-sm{font-family:var(--mono);font-size:11px;color:var(--text3)}
-.btn-rf{background:var(--red-dim);border:1px solid rgba(214,58,47,.4);color:var(--red-hi);
-  padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s}
-.btn-rf:hover{background:var(--red);color:#fff;border-color:var(--red)}
+.comp-badge{background:var(--blue-dim);color:var(--blue);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid rgba(59,140,240,0.3)}
 
 /* ── MAIN ── */
 .main{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:16px 22px 56px}
@@ -71,186 +63,69 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
 .gbb:hover{border-color:rgba(214,58,47,.4);color:var(--text)}
 .gbb.on{background:var(--red-dim);border-color:var(--red);color:var(--red-hi)}
 
-/* filter grid: region, cabang, area, divisi, hke | bulan1, bulan2, apply */
 .fgrid{display:grid;
-  grid-template-columns:repeat(4,1fr) 100px repeat(2,120px) auto;
+  grid-template-columns:repeat(4,1fr) 120px auto;
   gap:10px;align-items:end}
-@media(max-width:1200px){.fgrid{grid-template-columns:repeat(4,1fr) 90px repeat(2,110px) auto}}
-@media(max-width:900px){.fgrid{grid-template-columns:repeat(3,1fr) 90px}}
-@media(max-width:600px){.fgrid{grid-template-columns:1fr 1fr}}
-@media(max-width:380px){.fgrid{grid-template-columns:1fr}}
 
 .fi{display:flex;flex-direction:column;gap:3px}
 .fi-lbl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.7px;
   color:var(--text3);display:flex;align-items:center;gap:5px}
 .f-act{display:none;font-size:9px;padding:1px 5px;border-radius:3px;
   background:var(--red-dim);color:var(--red-hi);border:1px solid rgba(214,58,47,.4);
-  text-transform:none;letter-spacing:0;font-weight:700;white-space:nowrap;
-  max-width:80px;overflow:hidden;text-overflow:ellipsis}
+  text-transform:none;letter-spacing:0;font-weight:700;white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis}
 .f-act.show{display:inline-block}
 .fi select,.fi input[type=number]{background:var(--bg3);border:1px solid var(--border);color:var(--text);
   padding:7px 9px;border-radius:var(--r);font-size:12.5px;outline:none;width:100%;
   transition:border-color .15s,background-color .15s;appearance:none;-webkit-appearance:none;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234a5568' stroke-width='1.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 8px center;padding-right:24px}
-.fi input[type=number]{background-image:none;padding-right:9px;-moz-appearance:textfield}
-.fi input[type=number]::-webkit-inner-spin-button{opacity:0}
 .fi select:focus,.fi input:focus{border-color:var(--red)}
-.fi select:disabled{opacity:.35;cursor:not-allowed}
-.fi select.sel-on{border-color:rgba(214,58,47,.65);background-color:#1c1210}
-
-/* HKE input highlight */
-.hke-wrap{position:relative}
-.hke-wrap input{padding-right:32px}
-.hke-unit{position:absolute;right:9px;top:50%;transform:translateY(-50%);
-  font-size:10px;color:var(--text3);pointer-events:none;font-family:var(--mono)}
-
-/* Bulan select dengan warna berbeda per bulan */
-.sel-b1.sel-on{background-color:#0f1820;border-color:rgba(59,140,240,.6)}
-.sel-b2.sel-on{background-color:#130f1e;border-color:rgba(167,139,250,.6)}
 
 .btn-ap{background:var(--red);border:none;color:#fff;padding:8px 18px;
   border-radius:var(--r);font-size:12.5px;font-weight:500;cursor:pointer;
   transition:background .15s;white-space:nowrap;align-self:flex-end}
-.btn-ap:hover{background:var(--red-hi)}
-.btn-ap:disabled{opacity:.5;cursor:not-allowed}
-
-/* ── PILLS ── */
-.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.pills:empty{margin-bottom:0}
-.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;
-  border:1px solid rgba(214,58,47,.35);background:var(--red-dim);
-  font-size:11px;color:var(--red-hi);font-weight:500}
-.pill-k{color:var(--text3);font-size:10px;font-weight:400}
-.pill-x{cursor:pointer;opacity:.7;font-size:11px;margin-left:1px}
-.pill-x:hover{opacity:1}
-.pill-b1{border-color:rgba(59,140,240,.4);background:var(--blue-dim);color:var(--blue)}
-.pill-b1 .pill-k{color:rgba(59,140,240,.6)}
-.pill-b2{border-color:rgba(167,139,250,.4);background:var(--purple-dim);color:var(--purple)}
-.pill-b2 .pill-k{color:rgba(167,139,250,.6)}
 
 /* ── CARDS ── */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
-@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:420px){.cards{grid-template-columns:1fr}}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);
-  padding:15px 17px;position:relative;overflow:hidden;transition:transform .2s}
-.card:hover{transform:translateY(-2px)}
+  padding:15px 17px;position:relative;overflow:hidden}
 .card-ac{position:absolute;top:0;left:0;right:0;height:2px}
-.c-b1 .card-ac{background:linear-gradient(90deg,var(--blue),transparent)}
-.c-b2 .card-ac{background:linear-gradient(90deg,var(--purple),transparent)}
-.c-b1e .card-ac{background:linear-gradient(90deg,rgba(59,140,240,.6),transparent)}
-.c-b2e .card-ac{background:linear-gradient(90deg,rgba(167,139,250,.6),transparent)}
-.card-std{position:absolute;top:12px;right:12px;font-size:9px;font-weight:500;
-  padding:2px 7px;border-radius:99px}
-.std-ept{background:rgba(245,158,11,.12);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
-.std-epb{background:var(--blue-dim);color:var(--blue);border:1px solid rgba(59,140,240,.3)}
-.card-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;
-  margin-bottom:6px;opacity:.6}
-.c-b1 .card-tag,.c-b1e .card-tag{color:var(--blue)}
-.c-b2 .card-tag,.c-b2e .card-tag{color:var(--purple)}
-.ci{font-size:16px;margin-bottom:7px;opacity:.7}
-.cl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;
-  color:var(--text2);margin-bottom:2px}
-.cv{font-family:'Roboto',sans-serif;font-weight:700;font-size:28px;
-  letter-spacing:-.5px;line-height:1;transition:color .3s}
-.cs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:5px;line-height:1.5}
+.c-b1 .card-ac{background:linear-gradient(90deg,var(--red),transparent)}
+.c-b2 .card-ac{background:linear-gradient(90deg,var(--text3),transparent)}
+.card-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;opacity:.6}
+.cl{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:2px}
+.cv{font-weight:700;font-size:28px;letter-spacing:-.5px;line-height:1}
+.cs{font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:5px}
 
 /* ── LAYOUT ── */
 .crow{display:grid;grid-template-columns:3fr 2fr;gap:12px;margin-bottom:12px}
-@media(max-width:860px){.crow{grid-template-columns:1fr}}
 .panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
 .ph{padding:10px 15px 8px;border-bottom:1px solid var(--border2);
-  display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  display:flex;align-items:center;justify-content:space-between}
 .pt{display:flex;align-items:center;gap:6px;font-family:var(--display);font-size:13px;font-weight:700}
-.dot{width:6px;height:6px;border-radius:50%}
-.dr{background:var(--red-hi)} .dg{background:var(--gold)} .dt{background:var(--teal)}
-.db{background:var(--blue)} .dp{background:var(--purple)}
-.pm{font-family:var(--mono);font-size:10px;color:var(--text3)}
 .pb{padding:12px 14px}
-
-/* ── CHART ── */
-.cbox{position:relative;height:220px}
-.overlay{position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:7px;
-  background:rgba(10,12,15,.55);backdrop-filter:blur(4px);border-radius:var(--r)}
-.spinner{width:22px;height:22px;border:2px solid var(--border);
-  border-top-color:var(--red);border-radius:50%;animation:sp .6s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.ot{font-size:11px;color:var(--text3)}
-
-/* ── LEGEND ── */
-.legend{display:flex;gap:12px;flex-wrap:wrap;padding:7px 15px;
-  border-top:1px solid var(--border2);font-size:10px;color:var(--text3)}
-.leg{display:flex;align-items:center;gap:4px}
-.leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
-.leg-line{width:16px;height:2px;border-bottom:2px dashed;flex-shrink:0}
+.cbox{position:relative;height:260px}
 
 /* ── TABLE ── */
-.tw{overflow:auto;max-height:300px}
+.tw{overflow:auto}
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{background:var(--bg3);padding:7px 10px;text-align:left;white-space:nowrap;
-  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;
-  color:var(--text3);position:sticky;top:0;z-index:1;border-bottom:1px solid var(--border)}
-th.r{text-align:right}
-/* Header grup bulan di tabel perbandingan */
-th.bh{text-align:center;font-size:9px}
-th.b1h{color:var(--blue)}
-th.b2h{color:var(--purple)}
-tbody tr{border-bottom:1px solid var(--border2);transition:background .1s}
-tbody tr:hover{background:rgba(255,255,255,.02)}
-td{padding:7px 10px;color:var(--text)}
-td.r{text-align:right;font-family:var(--mono);font-size:11px}
-td.c{text-align:center;font-family:var(--mono);font-size:11px}
+thead th{background:var(--bg3);padding:8px 10px;text-align:left;font-size:10px;font-weight:500;text-transform:uppercase;color:var(--text3);position:sticky;top:0;z-index:1;border-bottom:1px solid var(--border)}
+td{padding:8px 10px;color:var(--text);border-bottom:1px solid var(--border2)}
+.r{text-align:right}
+.sep{border-left:1px solid var(--border)}
 
-/* ── BADGE conditional ── */
-.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;
-  font-family:var(--mono);font-size:11px;font-weight:500;white-space:nowrap}
-.bdg-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.ept-ok {background:rgba(34,197,94,.12);color:var(--green)}
-.ept-ok  .bdg-dot{background:var(--green)}
-.ept-low{background:rgba(240,68,56,.10);color:var(--red-hi)}
-.ept-low .bdg-dot{background:var(--red-hi)}
-.epb-ok {background:rgba(34,197,94,.12);color:var(--green)}
-.epb-ok  .bdg-dot{background:var(--green)}
-.epb-low{background:rgba(240,68,56,.10);color:var(--red-hi)}
-.epb-low .bdg-dot{background:var(--red-hi)}
+/* ── BADGE ── */
+.bdg{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-family:var(--mono);font-size:11px;font-weight:500}
+.ept-ok {background:rgba(34,197,94,.1);color:var(--green)}
+.ept-low{background:rgba(214,58,47,.1);color:var(--red-hi)}
+.rk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;background:var(--bg3);border:1px solid var(--border)}
+.rk1{border-color:var(--gold);color:var(--gold)}
 
-/* ranking */
-.rk{display:inline-flex;align-items:center;justify-content:center;
-  width:19px;height:19px;border-radius:50%;font-size:10px;font-weight:500;
-  font-family:var(--mono);background:var(--bg3);border:1px solid var(--border);color:var(--text3)}
-.rk1{background:rgba(232,168,48,.15);border-color:var(--gold);color:var(--gold)}
-.rk2{background:rgba(176,180,184,.1);border-color:#a0a8b0;color:#a0a8b0}
-.rk3{background:rgba(205,97,85,.15);border-color:#cd6155;color:#cd6155}
-.nc{display:flex;flex-direction:column;gap:1px}
-.nm{font-size:12px;font-weight:500;color:var(--text)}
-.ns{font-family:var(--mono);font-size:10px;color:var(--text3)}
+#ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:var(--bg2);z-index:10}
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:sp .6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
 
-/* separator kolom bulan */
-td.sep,th.sep{border-left:1px solid var(--border);padding-left:12px}
-
-/* diff badge */
-.diff-pos{color:var(--green);font-size:10px}
-.diff-neg{color:var(--red-hi);font-size:10px}
-.diff-neu{color:var(--text3);font-size:10px}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:22px;left:50%;
-  transform:translateX(-50%) translateY(56px);
-  padding:8px 16px;border-radius:8px;background:var(--bg3);
-  border:1px solid var(--border);font-size:12px;font-weight:500;
-  z-index:999;transition:transform .25s ease;
-  box-shadow:0 8px 28px rgba(0,0,0,.6);white-space:nowrap;pointer-events:none}
-#toast.show{transform:translateX(-50%) translateY(0)}
-#toast.ok  {color:var(--teal);border-color:rgba(34,197,160,.4)}
-#toast.err {color:var(--red-hi);border-color:rgba(240,68,56,.4)}
-#toast.warn{color:var(--gold);border-color:rgba(232,168,48,.4)}
-.empty{padding:32px 14px;text-align:center;color:var(--text3);font-size:12px}
-
-/* ── SECTION DIVIDER ── */
-.sec-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;
-  color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
+.sec-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin:16px 0 8px;display:flex;align-items:center;gap:8px}
 .sec-label::after{content:'';flex:1;height:1px;background:var(--border2)}
 </style>
 </head>
@@ -262,770 +137,377 @@ td.sep,th.sep{border-left:1px solid var(--border);padding-left:12px}
     <div class="brand-name">EPT &amp; EPB <em>Monitor</em></div>
   </div>
   <div class="hdr-right">
-    <div class="live"><span></span>Live</div>
-    <span class="ts-sm" id="tsUp">—</span>
-    <button class="btn-rf" onclick="loadAll()">↺ Refresh</button>
+    <div class="comp-badge">APR vs JAN 2026</div>
+    <button class="btn-rf" style="background:none; border:none; color:var(--text3); cursor:pointer" onclick="loadAll()">↺ Refresh</button>
   </div>
 </header>
 
 <div class="main">
 
-  <!-- FILTER BAR -->
   <div class="fbar">
     <div class="ftop">
-      <span class="flabel">Filter &amp; Dimensi</span>
+      <span class="flabel">Filter Dimensi</span>
       <div class="gbrow">
-        <button class="gbb"    data-g="region"   onclick="setGroup(this)">Region</button>
-        <button class="gbb on" data-g="cabang"   onclick="setGroup(this)">Cabang</button>
-        <button class="gbb"    data-g="area"     onclick="setGroup(this)">Area</button>
+        <button class="gbb" data-g="region" onclick="setGroup(this)">Region</button>
+        <button class="gbb on" data-g="cabang" onclick="setGroup(this)">Cabang</button>
+        <button class="gbb" data-g="area" onclick="setGroup(this)">Area</button>
       </div>
     </div>
     <div class="fgrid">
-
       <div class="fi">
         <span class="fi-lbl">Region <span class="f-act" id="act-fr"></span></span>
-        <select id="fr" onchange="onFC(this,'act-fr');cscReg()">
-          <option value="">Semua Region</option>
-        </select>
+        <select id="fr" onchange="onFC(this,'act-fr');cscReg()"><option value="">Semua Region</option></select>
       </div>
-
       <div class="fi">
         <span class="fi-lbl">Cabang <span class="f-act" id="act-fc"></span></span>
-        <select id="fc" onchange="onFC(this,'act-fc');cscCab()">
-          <option value="">Semua Cabang</option>
-        </select>
+        <select id="fc" onchange="onFC(this,'act-fc');cscCab()"><option value="">Semua Cabang</option></select>
       </div>
-
       <div class="fi">
         <span class="fi-lbl">Area <span class="f-act" id="act-fa"></span></span>
-        <select id="fa" onchange="onFC(this,'act-fa');cscArea()">
-          <option value="">Semua Area</option>
-        </select>
+        <select id="fa" onchange="onFC(this,'act-fa');cscArea()"><option value="">Semua Area</option></select>
       </div>
-
       <div class="fi">
-        <span class="fi-lbl">Divisi Sales <span class="f-act" id="act-fdiv"></span></span>
-        <select id="fdiv" onchange="onFC(this,'act-fdiv')">
-          <option value="">Semua Divisi</option>
-        </select>
+        <span class="fi-lbl">Divisi <span class="f-act" id="act-fdiv"></span></span>
+        <select id="fdiv" onchange="onFC(this,'act-fdiv')"><option value="">Semua Divisi</option></select>
       </div>
-
       <div class="fi">
         <span class="fi-lbl">Maks HKE</span>
-        <div class="hke-wrap">
-          <input type="number" id="fhke" min="1" max="31" placeholder="—" oninput="updatePills()">
-          <span class="hke-unit">HKE</span>
-        </div>
+        <input type="number" id="fhke" min="1" max="31" placeholder="31">
       </div>
-
-      <div class="fi">
-        <span class="fi-lbl" style="color:var(--blue);opacity:.8">● Bulan 1</span>
-        <select id="fb1" class="sel-b1" onchange="onFC(this,''); updatePills(); syncBulanEPB()">
-          <option value="">Pilih Bulan</option>
-        </select>
-      </div>
-
-      <div class="fi">
-        <span class="fi-lbl" style="color:var(--purple);opacity:.8">● Bulan 2</span>
-        <select id="fb2" class="sel-b2" onchange="onFC(this,''); updatePills(); syncBulanEPB()">
-          <option value="">— (opsional)</option>
-        </select>
-      </div>
-
       <div class="fi">
         <button class="btn-ap" id="btnAp" onclick="render()">Terapkan</button>
       </div>
     </div>
   </div>
 
-  <!-- ACTIVE PILLS -->
-  <div class="pills" id="pills"></div>
-
-  <!-- SECTION: CARDS -->
-  <div class="sec-label">Ringkasan</div>
-  <div class="cards" id="cardsWrap">
-    <!-- diisi JS -->
+  <div class="sec-label">Ringkasan Performa APR</div>
+  <div class="cards">
     <div class="card c-b1">
       <div class="card-ac"></div>
-      <span class="card-std std-ept">Std ≥ 7</span>
-      <div class="card-tag" id="ctag1">Bulan 1</div>
-      <div class="cl">EPT</div>
+      <div class="card-tag">APRIL 2026</div>
+      <div class="cl">Avg EPT</div>
       <div class="cv" id="cv-ept1">—</div>
       <div class="cs" id="cs-ept1">—</div>
     </div>
-    <div class="card c-b1e">
+    <div class="card c-b1">
       <div class="card-ac"></div>
-      <span class="card-std std-epb">Std ≥ 12</span>
-      <div class="card-tag" id="ctag2">Bulan 1</div>
-      <div class="cl">EPB</div>
+      <div class="card-tag">APRIL 2026</div>
+      <div class="cl">Avg EPB</div>
       <div class="cv" id="cv-epb1">—</div>
       <div class="cs" id="cs-epb1">—</div>
     </div>
-    <div class="card c-b2" id="card-ept2">
+    <div class="card c-b2">
       <div class="card-ac"></div>
-      <span class="card-std std-ept">Std ≥ 7</span>
-      <div class="card-tag" id="ctag3">Bulan 2</div>
-      <div class="cl">EPT</div>
-      <div class="cv" id="cv-ept2">—</div>
+      <div class="card-tag">JANUARI 2026 (Baseline)</div>
+      <div class="cl">Avg EPT</div>
+      <div class="cv" id="cv-ept2" style="font-size:20px; opacity:0.7">—</div>
       <div class="cs" id="cs-ept2">—</div>
     </div>
-    <div class="card c-b2e" id="card-epb2">
+    <div class="card c-b2">
       <div class="card-ac"></div>
-      <span class="card-std std-epb">Std ≥ 12</span>
-      <div class="card-tag" id="ctag4">Bulan 2</div>
-      <div class="cl">EPB</div>
-      <div class="cv" id="cv-epb2">—</div>
+      <div class="card-tag">JANUARI 2026 (Baseline)</div>
+      <div class="cl">Avg EPB</div>
+      <div class="cv" id="cv-epb2" style="font-size:20px; opacity:0.7">—</div>
       <div class="cs" id="cs-epb2">—</div>
     </div>
   </div>
 
-  <!-- SECTION: CHART + RANKING -->
-  <div class="sec-label">Trend EPT per Tanggal</div>
   <div class="crow">
     <div class="panel">
-      <div class="ph">
-        <div class="pt"><span class="dot dr"></span>Trend EPT Harian</div>
-        <span class="pm" id="pmR">—</span>
-      </div>
+      <div class="ph"><div class="pt">Trend EPT Harian (APR vs JAN)</div></div>
       <div class="pb">
         <div class="cbox">
           <canvas id="ch"></canvas>
-          <div class="overlay" id="ov">
-            <div class="spinner"></div><span class="ot">Memuat...</span>
-          </div>
+          <div id="ov"><div class="spinner"></div></div>
         </div>
       </div>
-      <div class="legend" id="chartLegend">
-        <span class="leg"><span class="leg-dot" style="background:rgba(34,197,94,.75)"></span>EPT ≥ 7</span>
-        <span class="leg"><span class="leg-dot" style="background:rgba(240,68,56,.75)"></span>EPT &lt; 7</span>
-        <span class="leg"><span class="leg-line" style="border-color:rgba(245,158,11,.7)"></span>Std (7)</span>
-      </div>
     </div>
-
     <div class="panel">
-      <div class="ph">
-        <div class="pt"><span class="dot dg"></span>Ranking EPT</div>
-        <span class="pm" id="pmK">—</span>
-      </div>
-      <div class="tw" style="max-height:320px" id="tRank">
-        <div style="padding:28px;display:flex;justify-content:center"><div class="spinner"></div></div>
-      </div>
+      <div class="ph"><div class="pt">Top 10 Performers (APR)</div></div>
+      <div class="tw" id="tRank" style="max-height:300px"></div>
     </div>
   </div>
 
-  <!-- SECTION: DETAIL TABLE -->
-  <div class="sec-label">Detail per Dimensi</div>
+  <div class="sec-label">Detail Perbandingan APR vs JAN</div>
   <div class="panel">
-    <div class="ph">
-      <div class="pt"><span class="dot dt"></span><span id="dtTitle">Detail EPT &amp; EPB</span></div>
-      <span class="pm" id="pmD">—</span>
-    </div>
-    <div class="tw" style="max-height:420px" id="tDet">
-      <div style="padding:28px;display:flex;justify-content:center"><div class="spinner"></div></div>
-    </div>
-    <div class="legend">
-      <span class="leg"><span class="leg-dot" style="background:var(--green)"></span>Tercapai</span>
-      <span class="leg"><span class="leg-dot" style="background:var(--red-hi)"></span>Di bawah standar</span>
-      <span class="leg" style="color:var(--text3);font-size:10px">▲▼ = selisih vs bulan lain</span>
-    </div>
+    <div class="tw" id="tDet" style="max-height:400px"></div>
   </div>
 
 </div>
-<div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
-//  CONFIG
-// ═══════════════════════════════════════════════════
 const SS_ID   = '1cRoZyleTMYqBhZmzr9OgQVRz29ZAyGYeTm_aieKAg3g';
 const API_KEY = 'AIzaSyBE8dSxs_7dLqHFF4M3W_mCoxmjnpBib1k';
-const R_EPT   = 'EPT!A:J';   // nama_region,cabang,kd_dist,area,hke,bulan,div_sls,tgl,total_eceran,total_ec
-const R_EPB   = 'EPB!A:J';   // nama_region,cabang,kd_dist,area,bulan,div_sls,tgl,total_eceran,total_effective_outlet (+ bulan)
 const EPT_STD = 7;
 const EPB_STD = 12;
 
-// ═══════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════
 let RAW = { ept: [], epb: [] };
 let grp = 'cabang';
 let chart = null;
 
-const FMETA = [
-  { id:'fr',   actId:'act-fr',   label:'Region' },
-  { id:'fc',   actId:'act-fc',   label:'Cabang' },
-  { id:'fa',   actId:'act-fa',   label:'Area' },
-  { id:'fdiv', actId:'act-fdiv', label:'Divisi' },
-];
+// Target bulan perbandingan
+const CUR_MO = 'APR';
+const PRE_MO = 'JAN';
 
-// ═══════════════════════════════════════════════════
-//  BOOT
-// ═══════════════════════════════════════════════════
 addEventListener('DOMContentLoaded', () => { initChart(); loadAll(); });
 
 async function loadAll() {
-  setBtn(true); ovShow(true);
-  toast('Mengambil data…', 'warn');
+  document.getElementById('ov').style.display = 'flex';
   try {
-    const [re, rb] = await Promise.all([fetchSh(R_EPT), fetchSh(R_EPB)]);
-    RAW.ept = parseEPT(re);
-    RAW.epb = parseEPB(rb);
+    const [re, rb] = await Promise.all([
+      fetchSh('EPT!A:J'),
+      fetchSh('EPB!A:J')
+    ]);
+    RAW.ept = parseData(re, true);
+    RAW.epb = parseData(rb, false);
     initFilters();
     render();
-    setText('tsUp', new Date().toLocaleTimeString('id-ID'));
-    toast(`${RAW.ept.length} baris EPT · ${RAW.epb.length} baris EPB`, 'ok');
-  } catch(e) {
-    ovShow(false); toast('Gagal: '+e.message,'err'); console.error(e);
-  }
-  setBtn(false);
+  } catch(e) { console.error(e); }
+  document.getElementById('ov').style.display = 'none';
 }
 
-// ═══════════════════════════════════════════════════
-//  FETCH
-// ═══════════════════════════════════════════════════
 async function fetchSh(range) {
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SS_ID}/values/${encodeURIComponent(range)}?key=${API_KEY}`;
   const res = await fetch(url);
-  if (!res.ok) {
-    const e = await res.json().catch(()=>({}));
-    throw new Error(e?.error?.message || `HTTP ${res.status}`);
-  }
   return (await res.json()).values || [];
 }
 
-// ═══════════════════════════════════════════════════
-//  PARSE
-//  Sheet EPT : nama_region, cabang, kd_dist, area, hke, bulan, div_sls, tgl, total_eceran, total_ec
-//  Sheet EPB : nama_region, cabang, kd_dist, area, bulan, div_sls, tgl, total_eceran, total_effective_outlet
-// ═══════════════════════════════════════════════════
-function parseEPT(rows) {
+function parseData(rows, isEPT) {
   if (rows.length < 2) return [];
   const h = rows[0].map(s=>s.trim().toLowerCase());
-  return rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
-    const o={}; h.forEach((k,i)=>o[k]=(r[i]||'').trim());
-    let tgl = o['tgl']||'';
-    if (tgl.includes('/')) {
-      const p=tgl.split('/');
-      tgl=p[0].length===4?`${p[0]}-${pad(p[1])}-${pad(p[2])}`:
-                          `${p[2]}-${pad(p[1])}-${pad(p[0])}`;
-    }
-    return {
-      region: o['nama_region']||'', cabang: o['cabang']||'',
-      kd_dist:o['kd_dist']||'',     area:   o['area']||'',
-      hke:    +o['hke']||0,         bulan:  o['bulan']||'',
-      div:    o['div_sls']||'',     tgl,
-      eceran: +o['total_eceran']||0,
-      ec:     +o['total_ec']||0,
-    };
-  }).filter(r=>r.tgl);
-}
-
-function parseEPB(rows) {
-  if (rows.length < 2) return [];
-  const h = rows[0].map(s=>s.trim().toLowerCase());
-  return rows.slice(1).filter(r=>r.some(Boolean)).map(r=>{
+  return rows.slice(1).map(r=>{
     const o={}; h.forEach((k,i)=>o[k]=(r[i]||'').trim());
     return {
-      region: o['nama_region']||'', cabang: o['cabang']||'',
-      kd_dist:o['kd_dist']||'',     area:   o['area']||'',
-      bulan:  o['bulan']||'',       div:    o['div_sls']||'',
-      eceran: +o['total_eceran']||0,
-      eo:     +o['total_effective_outlet']||0,
+      region: o['nama_region'], cabang: o['cabang'], area: o['area'],
+      bulan: o['bulan'], hke: +o['hke']||0, div: o['div_sls'],
+      tgl: o['tgl'], er: +o['total_eceran']||0,
+      val: isEPT ? (+o['total_ec']||0) : (+o['total_effective_outlet']||0)
     };
   });
 }
 
-// ═══════════════════════════════════════════════════
-//  INIT FILTERS
-// ═══════════════════════════════════════════════════
 function initFilters() {
   const all = [...RAW.ept, ...RAW.epb];
-  fill('fr',   uniq(all.map(r=>r.region)));
-  fill('fc',   uniq(all.map(r=>r.cabang)));
-  fill('fa',   uniq(all.map(r=>r.area)));
-  fill('fdiv', uniq(all.map(r=>r.div)));
-
-  // Bulan dari EPT union EPB
-  const bulans = uniq(all.map(r=>r.bulan).filter(Boolean));
-  fillBulan('fb1', bulans, '', 'Pilih Bulan');
-  fillBulan('fb2', bulans, '', '— (opsional)');
-
-  // default bulan terbaru sebagai bulan 1
-  if (bulans.length) {
-    document.getElementById('fb1').value = bulans[bulans.length-1];
-    syncBulanStyle();
-  }
+  const fill = (id, items) => {
+    const el = document.getElementById(id);
+    const sorted = [...new Set(items.filter(Boolean))].sort();
+    el.innerHTML = `<option value="">Semua ${id.replace('f','')}</option>` + 
+      sorted.map(v=>`<option value="${v}">${v}</option>`).join('');
+  };
+  fill('fr', all.map(r=>r.region));
+  fill('fc', all.map(r=>r.cabang));
+  fill('fa', all.map(r=>r.area));
+  fill('fdiv', all.map(r=>r.div));
 }
 
-function fillBulan(id, items, keep, placeholder) {
-  const el = document.getElementById(id);
-  const prev = keep || el.value;
-  el.innerHTML = `<option value="">${placeholder}</option>`;
-  items.forEach(v=>{
-    const o=document.createElement('option');
-    o.value=v; o.textContent=v;
-    if(v===prev) o.selected=true;
-    el.appendChild(o);
-  });
-}
-
-function syncBulanEPB() { syncBulanStyle(); updatePills(); }
-function syncBulanStyle() {
-  const b1=g('fb1'), b2=g('fb2');
-  document.getElementById('fb1').classList.toggle('sel-on', !!b1);
-  document.getElementById('fb2').classList.toggle('sel-on', !!b2);
-}
-
-// Cascade
-function cscReg() {
-  const reg=g('fr');
-  const src=[...RAW.ept,...RAW.epb].filter(r=>!reg||r.region===reg);
-  fill('fc',  uniq(src.map(r=>r.cabang)), g('fc'));
-  fill('fa',  uniq(src.map(r=>r.area)),   g('fa'));
-  fill('fdiv',uniq(src.map(r=>r.div)),    g('fdiv'));
-}
-function cscCab() {
-  const reg=g('fr'),cab=g('fc');
-  const src=[...RAW.ept,...RAW.epb].filter(r=>(!reg||r.region===reg)&&(!cab||r.cabang===cab));
-  fill('fa',  uniq(src.map(r=>r.area)), g('fa'));
-  fill('fdiv',uniq(src.map(r=>r.div)),  g('fdiv'));
-}
-function cscArea() {
-  const reg=g('fr'),cab=g('fc'),area=g('fa');
-  const src=[...RAW.ept,...RAW.epb].filter(r=>
-    (!reg||r.region===reg)&&(!cab||r.cabang===cab)&&(!area||r.area===area));
-  fill('fdiv',uniq(src.map(r=>r.div)), g('fdiv'));
-}
-
-// ═══════════════════════════════════════════════════
-//  VISUAL FEEDBACK FILTER
-// ═══════════════════════════════════════════════════
-function onFC(sel, actId) {
-  const active = sel.value !== '';
-  sel.classList.toggle('sel-on', active);
-  if (actId) {
-    const badge = document.getElementById(actId);
-    if (badge) {
-      badge.textContent = active ? sel.options[sel.selectedIndex].text : '';
-      badge.classList.toggle('show', active);
-    }
-  }
-  updatePills();
-}
-
-function updatePills() {
-  const wrap = document.getElementById('pills');
-  wrap.innerHTML = '';
-
-  // Filter biasa
-  FMETA.forEach(({id,label})=>{
-    const el=document.getElementById(id);
-    if (!el||!el.value) return;
-    addPill(wrap, label, el.options[el.selectedIndex].text, ()=>clearFilter(id), '');
-  });
-
-  // HKE
-  const hke = document.getElementById('fhke').value;
-  if (hke) addPill(wrap, 'Maks HKE', hke+' HKE', ()=>{ document.getElementById('fhke').value=''; updatePills(); render(); }, '');
-
-  // Bulan 1
-  const b1 = g('fb1');
-  if (b1) addPill(wrap, 'Bulan 1', b1, ()=>{ document.getElementById('fb1').value=''; syncBulanEPB(); render(); }, 'pill-b1');
-
-  // Bulan 2
-  const b2 = g('fb2');
-  if (b2) addPill(wrap, 'Bulan 2', b2, ()=>{ document.getElementById('fb2').value=''; syncBulanEPB(); render(); }, 'pill-b2');
-}
-
-function addPill(wrap, key, val, onX, extraCls) {
-  const p = document.createElement('span');
-  p.className = 'pill ' + (extraCls||'');
-  p.innerHTML = `<span class="pill-k">${key}:</span> ${esc(val)} <span class="pill-x">✕</span>`;
-  p.querySelector('.pill-x').addEventListener('click', onX);
-  wrap.appendChild(p);
-}
-
-function clearFilter(id) {
-  const el=document.getElementById(id);
-  if (!el) return;
-  el.value='';
-  const meta=FMETA.find(f=>f.id===id);
-  if (meta) onFC(el, meta.actId);
-  if (id==='fr') cscReg();
-  else if (id==='fc') cscCab();
-  else if (id==='fa') cscArea();
-  render();
-}
-
-// ═══════════════════════════════════════════════════
-//  CORE FILTER FUNCTION
-// ═══════════════════════════════════════════════════
-function baseFilter(arr, {reg,cab,area,div}) {
-  return arr.filter(r=>
-    (!reg  || r.region===reg)  &&
-    (!cab  || r.cabang===cab)  &&
-    (!area || r.area  ===area) &&
-    (!div  || r.div   ===div)
-  );
-}
-
-function getEPT(bulan, maxHKE) {
-  const reg=g('fr'),cab=g('fc'),area=g('fa'),div=g('fdiv');
-  let rows = baseFilter(RAW.ept, {reg,cab,area,div});
-  if (bulan) rows = rows.filter(r=>r.bulan===bulan);
-  if (maxHKE) rows = rows.filter(r=>r.hke<=maxHKE);
-  return rows;
-}
-
-function getEPB(bulan) {
-  const reg=g('fr'),cab=g('fc'),area=g('fa'),div=g('fdiv');
-  let rows = baseFilter(RAW.epb, {reg,cab,area,div});
-  if (bulan) rows = rows.filter(r=>r.bulan===bulan);
-  return rows;
-}
-
-// ═══════════════════════════════════════════════════
-//  RENDER MAIN
-// ═══════════════════════════════════════════════════
 function render() {
-  const b1 = g('fb1'), b2 = g('fb2');
-  const maxHKE = +document.getElementById('fhke').value || null;
+  const f = {
+    reg: document.getElementById('fr').value,
+    cab: document.getElementById('fc').value,
+    area: document.getElementById('fa').value,
+    div: document.getElementById('fdiv').value,
+    hke: +document.getElementById('fhke').value || 31
+  };
 
-  const ept1 = getEPT(b1, maxHKE);
-  const epb1 = getEPB(b1);
-  const ept2 = b2 ? getEPT(b2, maxHKE) : [];
-  const epb2 = b2 ? getEPB(b2) : [];
+  const getFiltered = (src, mo, hkeLimit) => src.filter(r => 
+    r.bulan === mo && 
+    (!f.reg || r.region === f.reg) &&
+    (!f.cab || r.cabang === f.cab) &&
+    (!f.area || r.area === f.area) &&
+    (!f.div || r.div === f.div) &&
+    (!hkeLimit || r.hke <= f.hke)
+  );
 
-  renderCards(ept1, epb1, ept2, epb2, b1, b2, maxHKE);
-  renderChart(ept1, ept2, b1, b2);
-  const tbl1 = buildTable(ept1, epb1);
-  const tbl2 = b2 ? buildTable(ept2, epb2) : null;
-  renderRank(tbl1, b1);
-  renderDet(tbl1, tbl2, b1, b2);
-  ovShow(false);
+  const eptApr = getFiltered(RAW.ept, CUR_MO, true);
+  const eptJan = getFiltered(RAW.ept, PRE_MO, true);
+  const epbApr = getFiltered(RAW.epb, CUR_MO, false);
+  const epbJan = getFiltered(RAW.epb, PRE_MO, false);
+
+  updateCards(eptApr, epbApr, eptJan, epbJan);
+  updateChart(eptApr, eptJan);
+  
+  const tblApr = buildSummaryTable(eptApr, epbApr);
+  const tblJan = buildSummaryTable(eptJan, epbJan);
+  
+  renderRanking(tblApr); // Ranking berdasarkan APR
+  renderDetail(tblApr, tblJan);
 }
 
-// ═══════════════════════════════════════════════════
-//  CARDS
-// ═══════════════════════════════════════════════════
-function calcEPT(rows) {
-  const ec=sum(rows,'ec'), er=sum(rows,'eceran');
-  return { val: ec>0 ? r2(er/ec) : 0, er, ec };
-}
-function calcEPB(rows) {
-  const eo=sum(rows,'eo'), er=sum(rows,'eceran');
-  return { val: eo>0 ? r2(er/eo) : 0, er, eo };
-}
+function updateCards(eA, bA, eJ, bJ) {
+  const calc = (rows) => {
+    const er = rows.reduce((a,b)=>a+b.er,0);
+    const v = rows.reduce((a,b)=>a+b.val,0);
+    return { avg: v? (er/v) : 0, er, v };
+  };
 
-function renderCards(ept1,epb1,ept2,epb2,b1,b2,maxHKE) {
-  const e1=calcEPT(ept1), b1e=calcEPB(epb1);
-  const e2=calcEPT(ept2), b2e=calcEPB(epb2);
-  const hkeTxt = maxHKE ? ` s/d HKE-${maxHKE}` : '';
+  const rAprE = calc(eA), rAprB = calc(bA);
+  const rJanE = calc(eJ), rJanB = calc(bJ);
 
-  setText('ctag1', b1||(maxHKE?'Filtered':'Semua'));
-  setText('ctag2', b1||(maxHKE?'Filtered':'Semua'));
-  setText('ctag3', b2||'Bulan 2');
-  setText('ctag4', b2||'Bulan 2');
+  const set = (idV, idS, res, std) => {
+    const el = document.getElementById(idV);
+    el.textContent = res.avg.toFixed(2);
+    el.style.color = res.avg >= std ? 'var(--green)' : 'var(--red-hi)';
+    document.getElementById(idS).textContent = `${res.er.toLocaleString()} / ${res.v.toLocaleString()}`;
+  };
 
-  setCard('cv-ept1', 'cs-ept1', e1.val, e1, EPT_STD, true, hkeTxt);
-  setCard('cv-epb1', 'cs-epb1', b1e.val, b1e, EPB_STD, false, '');
-
-  const show2 = !!b2;
-  document.getElementById('card-ept2').style.opacity = show2 ? '1' : '0.25';
-  document.getElementById('card-epb2').style.opacity = show2 ? '1' : '0.25';
-  setCard('cv-ept2', 'cs-ept2', e2.val, e2, EPT_STD, true, hkeTxt);
-  setCard('cv-epb2', 'cs-epb2', b2e.val, b2e, EPB_STD, false, '');
+  set('cv-ept1', 'cs-ept1', rAprE, EPT_STD);
+  set('cv-epb1', 'cs-epb1', rAprB, EPB_STD);
+  set('cv-ept2', 'cs-ept2', rJanE, EPT_STD);
+  set('cv-epb2', 'cs-epb2', rJanB, EPB_STD);
 }
 
-function setCard(cvId, csId, val, d, std, isEPT, extra) {
-  const elV=document.getElementById(cvId), elS=document.getElementById(csId);
-  if (!elV) return;
-  elV.textContent = f2(val);
-  elV.style.color = val>=std ? 'var(--green)' : 'var(--red-hi)';
-  if (elS) {
-    elS.textContent = isEPT
-      ? `${fN(d.er)} ÷ ${fN(d.ec)} EC${extra}`
-      : `${fN(d.er)} ÷ ${fN(d.eo)} EO`;
-  }
-}
-
-// ═══════════════════════════════════════════════════
-//  CHART — 2 garis (bulan1 bar + bulan2 line) + garis std
-// ═══════════════════════════════════════════════════
 function initChart() {
   const ctx = document.getElementById('ch').getContext('2d');
+  
+  // Gradients
+  const gradApr = ctx.createLinearGradient(0, 0, 0, 400);
+  gradApr.addColorStop(0, 'rgba(214, 58, 47, 0.6)');
+  gradApr.addColorStop(1, 'rgba(214, 58, 47, 0.05)');
+
   chart = new Chart(ctx, {
     type: 'bar',
-    data: { labels: [], datasets: [
-      { label:'EPT Bulan 1', data:[], backgroundColor:[], borderRadius:3, borderSkipped:false, order:3 },
-      { label:'EPT Bulan 2', data:[], type:'line',
-        borderColor:'rgba(167,139,250,.8)', backgroundColor:'rgba(167,139,250,.08)',
-        borderWidth:2, pointRadius:3, pointBackgroundColor:'rgba(167,139,250,.9)',
-        fill:false, tension:.3, order:2 },
-      { label:'Standar', data:[], type:'line',
-        borderColor:'rgba(245,158,11,.65)', borderWidth:1.5, borderDash:[5,4],
-        pointRadius:0, fill:false, tension:0, order:1 }
-    ]},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#181d24',borderColor:'rgba(255,255,255,.07)',borderWidth:1,
-          titleColor:'#8896a4',bodyColor:'#e8ecf0',padding:9,
-          callbacks:{
-            label: c=>{
-              if (c.datasetIndex===2) return ` Std: ${EPT_STD}`;
-              const sym = c.parsed.y>=EPT_STD?'✓':'↓';
-              return ` ${c.dataset.label}: ${f2(c.parsed.y)} ${sym}`;
-            }
-          }
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'APR (Current)',
+          data: [],
+          backgroundColor: gradApr,
+          borderColor: 'var(--red)',
+          borderWidth: 1,
+          borderRadius: 4,
+          order: 2
+        },
+        {
+          label: 'JAN (Baseline)',
+          data: [],
+          type: 'line',
+          borderColor: 'rgba(136, 150, 164, 0.5)',
+          borderDash: [5, 5],
+          pointRadius: 2,
+          fill: false,
+          tension: 0.4,
+          order: 1
         }
-      },
-      scales:{
-        x:{ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'},maxTicksLimit:16},grid:{color:'rgba(255,255,255,.04)'}},
-        y:{ticks:{color:'#4a5568',font:{size:10,family:'DM Mono'}},grid:{color:'rgba(255,255,255,.04)'}}
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#8896a4', font: { size: 10 } } } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#4a5568', font: { family: 'DM Mono', size: 9 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#4a5568' } }
       }
     }
   });
 }
 
-function renderChart(ept1, ept2, b1, b2) {
-  // Aggregate per tanggal untuk masing-masing bulan
-  const agg = rows => {
-    const m={};
-    rows.forEach(r=>{ if(!m[r.tgl])m[r.tgl]={ec:0,er:0}; m[r.tgl].ec+=r.ec; m[r.tgl].er+=r.eceran; });
+function updateChart(apr, jan) {
+  const agg = (data) => {
+    const m = {};
+    data.forEach(r => {
+      // Ambil tanggal saja (DD) untuk mapping sumbu X Harian
+      const d = r.tgl.split('/')[0].padStart(2, '0');
+      if(!m[d]) m[d] = {er:0, v:0};
+      m[d].er += r.er; m[d].v += r.val;
+    });
     return m;
   };
 
-  const m1 = agg(ept1);
-  const m2 = b2 ? agg(ept2) : {};
+  const mA = agg(apr), mJ = agg(jan);
+  const days = [...Array(31).keys()].map(i => (i+1).toString().padStart(2, '0'));
 
-  // x-axis: gabungan tanggal dari kedua bulan
-  const allDates = uniq([...Object.keys(m1), ...Object.keys(m2)]).sort();
+  chart.data.labels = days;
+  chart.data.datasets[0].data = days.map(d => mA[d]?.v ? (mA[d].er/mA[d].v) : null);
+  chart.data.datasets[1].data = days.map(d => mJ[d]?.v ? (mJ[d].er/mJ[d].v) : null);
+  chart.update();
+}
 
-  const vals1  = allDates.map(d=>m1[d]?.ec>0 ? r2(m1[d].er/m1[d].ec) : null);
-  const vals2  = allDates.map(d=>m2[d]?.ec>0 ? r2(m2[d].er/m2[d].ec) : null);
-  const colors1 = vals1.map(v=>v===null?'transparent':v>=EPT_STD?'rgba(34,197,94,.75)':'rgba(240,68,56,.75)');
-
-  chart.data.labels = allDates.map(d=>{
-    const dt=new Date(d+'T00:00:00');
-    return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short'});
+function buildSummaryTable(ept, epb) {
+  const m = {};
+  const getKey = r => grp === 'region' ? r.region : (grp === 'area' ? r.area : r.cabang);
+  
+  ept.forEach(r => {
+    const k = getKey(r);
+    if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 };
+    m[k].eEr += r.er; m[k].eVal += r.val;
   });
-  chart.data.datasets[0].data = vals1;
-  chart.data.datasets[0].backgroundColor = colors1;
-  chart.data.datasets[0].label = `EPT ${b1||'Bulan 1'}`;
-  chart.data.datasets[1].data = b2 ? vals2 : [];
-  chart.data.datasets[1].label = `EPT ${b2}`;
-  chart.data.datasets[2].data = allDates.map(()=>EPT_STD);
-  chart.update('none');
-
-  // update legend chart
-  const leg = document.getElementById('chartLegend');
-  if (leg) {
-    let l = `
-      <span class="leg"><span class="leg-dot" style="background:rgba(34,197,94,.75)"></span>EPT ≥ 7</span>
-      <span class="leg"><span class="leg-dot" style="background:rgba(240,68,56,.75)"></span>EPT &lt; 7</span>
-      <span class="leg"><span class="leg-line" style="border-color:rgba(245,158,11,.7)"></span>Std (7)</span>`;
-    if (b2) l += `<span class="leg"><span class="leg-dot" style="background:var(--purple);border-radius:50%"></span>${esc(b2)} (garis)</span>`;
-    leg.innerHTML = l;
-  }
-  if (allDates.length>=2) setText('pmR', allDates[0]+' – '+allDates[allDates.length-1]);
-}
-
-// ═══════════════════════════════════════════════════
-//  BUILD TABLE
-// ═══════════════════════════════════════════════════
-function kfn(r) {
-  if (grp==='region') return {k:r.region, label:r.region, sub:r.kd_dist};
-  if (grp==='area')   return {k:r.area,   label:r.area,   sub:r.kd_dist};
-  return {k:r.cabang, label:r.cabang, sub:r.kd_dist};
-}
-
-function buildTable(ept, epb) {
-  const em={},bm={};
-  ept.forEach(r=>{
-    const {k,label,sub}=kfn(r);
-    if (!em[k]) em[k]={label,sub,ec:0,er:0};
-    em[k].ec+=r.ec; em[k].er+=r.eceran;
+  epb.forEach(r => {
+    const k = getKey(r);
+    if(!m[k]) m[k] = { label: k, eEr:0, eVal:0, bEr:0, bVal:0 };
+    m[k].bEr += r.er; m[k].bVal += r.val;
   });
-  epb.forEach(r=>{
-    const {k}=kfn(r);
-    if (!bm[k]) bm[k]={eo:0,er:0};
-    bm[k].eo+=r.eo; bm[k].er+=r.eceran;
+
+  return Object.values(m).map(i => ({
+    label: i.label,
+    ept: i.eVal ? (i.eEr/i.eVal) : 0,
+    epb: i.bVal ? (i.bEr/i.bVal) : 0
+  })).sort((a,b) => b.ept - a.ept);
+}
+
+function renderRanking(data) {
+  const top = data.slice(0, 10);
+  let h = `<table><thead><tr><th>Rank</th><th>${grp.toUpperCase()}</th><th class="r">EPT</th></tr></thead><tbody>`;
+  top.forEach((r, i) => {
+    h += `<tr>
+      <td><span class="rk ${i==0?'rk1':''}">${i+1}</span></td>
+      <td><b style="font-size:11px">${r.label}</b></td>
+      <td class="r">${bdg(r.ept, EPT_STD)}</td>
+    </tr>`;
   });
-  const keys=new Set([...Object.keys(em),...Object.keys(bm)]);
-  return [...keys].map(k=>{
-    const e=em[k]||{label:k,sub:'',ec:0,er:0};
-    const b=bm[k]||{eo:0,er:0};
-    return {
-      key:k, label:e.label, sub:e.sub,
-      ept: e.ec>0 ? r2(e.er/e.ec) : 0,
-      epb: b.eo>0 ? r2(b.er/b.eo) : 0,
-      er_e:e.er, ec:e.ec, er_b:b.er, eo:b.eo,
-    };
-  }).sort((a,b)=>b.ept-a.ept);
+  document.getElementById('tRank').innerHTML = h + `</tbody></table>`;
 }
 
-// ═══════════════════════════════════════════════════
-//  RENDER RANKING
-// ═══════════════════════════════════════════════════
-function renderRank(rows, b1) {
-  const top=rows.slice(0,10);
-  setText('pmK','top '+top.length+' per '+grp+(b1?' · '+b1:''));
-  if (!top.length) {
-    document.getElementById('tRank').innerHTML='<div class="empty">Tidak ada data</div>'; return;
-  }
-  let h=`<table><thead><tr><th>#</th><th>${cap(grp)}</th>
-    <th class="r">EPT</th><th class="r">EPB</th></tr></thead><tbody>`;
-  top.forEach((r,i)=>{
-    const rc=i<3?`rk${i+1}`:'';
-    h+=`<tr>
-      <td><span class="rk ${rc}">${i+1}</span></td>
-      <td><div class="nc"><span class="nm">${esc(r.label)}</span>
-        ${r.sub?`<span class="ns">${esc(r.sub)}</span>`:''}</div></td>
-      <td class="r">${bdgEPT(r.ept)}</td>
-      <td class="r">${bdgEPB(r.epb)}</td></tr>`;
+function renderDetail(apr, jan) {
+  const janMap = Object.fromEntries(jan.map(i => [i.label, i]));
+  let h = `<table><thead><tr>
+    <th>${grp.toUpperCase()}</th>
+    <th class="r">EPT APR</th><th class="r">EPB APR</th>
+    <th class="r sep">EPT JAN</th><th class="r">EPB JAN</th>
+    <th class="r sep">Gap EPT</th>
+  </tr></thead><tbody>`;
+
+  apr.forEach(a => {
+    const j = janMap[a.label] || { ept:0, epb:0 };
+    const gap = a.ept - j.ept;
+    h += `<tr>
+      <td>${a.label}</td>
+      <td class="r">${bdg(a.ept, EPT_STD)}</td>
+      <td class="r">${bdg(a.epb, EPB_STD)}</td>
+      <td class="r sep" style="opacity:0.6">${j.ept.toFixed(2)}</td>
+      <td class="r" style="opacity:0.6">${j.epb.toFixed(2)}</td>
+      <td class="r sep" style="color:${gap>=0?'var(--green)':'var(--red-hi)'}">${gap >= 0 ? '+' : ''}${gap.toFixed(2)}</td>
+    </tr>`;
   });
-  document.getElementById('tRank').innerHTML=h+'</tbody></table>';
+  document.getElementById('tDet').innerHTML = h + `</tbody></table>`;
 }
 
-// ═══════════════════════════════════════════════════
-//  RENDER DETAIL (dengan perbandingan bulan jika ada)
-// ═══════════════════════════════════════════════════
-function renderDet(tbl1, tbl2, b1, b2) {
-  const dim = cap(grp);
-  const hkeTxt = document.getElementById('fhke').value ? ` (s/d HKE-${document.getElementById('fhke').value})` : '';
-  setText('dtTitle', `Detail per ${dim}`);
-  setText('pmD', tbl1.length+' baris');
-
-  if (!tbl1.length) {
-    document.getElementById('tDet').innerHTML='<div class="empty">Tidak ada data</div>'; return;
-  }
-
-  const hasCmp = !!tbl2;
-
-  if (!hasCmp) {
-    // tabel biasa
-    let h=`<table><thead><tr>
-      <th>${dim}</th>
-      <th class="r">EPT${hkeTxt} <span style="opacity:.5;font-weight:400">std≥${EPT_STD}</span></th>
-      <th class="r">Total Eceran (EPT)</th><th class="r">Total EC</th>
-      <th class="r">EPB <span style="opacity:.5;font-weight:400">std≥${EPB_STD}</span></th>
-      <th class="r">Total Eceran (EPB)</th><th class="r">Total EO</th>
-    </tr></thead><tbody>`;
-    tbl1.forEach(r=>{
-      h+=`<tr>
-        <td><div class="nc"><span class="nm">${esc(r.label)}</span>
-          ${r.sub?`<span class="ns">${esc(r.sub)}</span>`:''}</div></td>
-        <td class="r">${bdgEPT(r.ept)}</td>
-        <td class="r">${fN(r.er_e)}</td><td class="r">${fN(r.ec)}</td>
-        <td class="r">${bdgEPB(r.epb)}</td>
-        <td class="r">${fN(r.er_b)}</td><td class="r">${fN(r.eo)}</td></tr>`;
-    });
-    document.getElementById('tDet').innerHTML=h+'</tbody></table>';
-  } else {
-    // tabel perbandingan dua bulan
-    // build lookup tbl2
-    const m2={};
-    tbl2.forEach(r=>m2[r.key]=r);
-    const keys=new Set([...tbl1.map(r=>r.key),...tbl2.map(r=>r.key)]);
-    const rows=[...keys].map(k=>{
-      const a=tbl1.find(r=>r.key===k)||{key:k,label:k,sub:'',ept:0,epb:0,er_e:0,ec:0,er_b:0,eo:0};
-      const b=m2[k]||{ept:0,epb:0,er_e:0,ec:0,er_b:0,eo:0};
-      return {label:a.label,sub:a.sub,a,b};
-    }).sort((x,y)=>y.a.ept-x.a.ept);
-
-    let h=`<table><thead>
-      <tr>
-        <th rowspan="2">${dim}</th>
-        <th class="r bh b1h" colspan="2">${esc(b1)} ${hkeTxt}</th>
-        <th class="r bh b2h sep" colspan="2">${esc(b2)} ${hkeTxt}</th>
-        <th class="r bh sep" rowspan="2">Δ EPT</th>
-        <th class="r bh sep" rowspan="2">Δ EPB</th>
-      </tr>
-      <tr>
-        <th class="r">EPT</th><th class="r">EPB</th>
-        <th class="r sep">EPT</th><th class="r">EPB</th>
-      </tr>
-    </thead><tbody>`;
-
-    rows.forEach(({label,sub,a,b})=>{
-      const dEPT = r2(a.ept - b.ept);
-      const dEPB = r2(a.epb - b.epb);
-      const diffEPT = dEPT>0?`<span class="diff-pos">▲${f2(Math.abs(dEPT))}</span>`:
-                      dEPT<0?`<span class="diff-neg">▼${f2(Math.abs(dEPT))}</span>`:
-                              `<span class="diff-neu">—</span>`;
-      const diffEPB = dEPB>0?`<span class="diff-pos">▲${f2(Math.abs(dEPB))}</span>`:
-                      dEPB<0?`<span class="diff-neg">▼${f2(Math.abs(dEPB))}</span>`:
-                              `<span class="diff-neu">—</span>`;
-      h+=`<tr>
-        <td><div class="nc"><span class="nm">${esc(label)}</span>
-          ${sub?`<span class="ns">${esc(sub)}</span>`:''}</div></td>
-        <td class="r">${bdgEPT(a.ept)}</td>
-        <td class="r">${bdgEPB(a.epb)}</td>
-        <td class="r sep">${bdgEPT(b.ept)}</td>
-        <td class="r">${bdgEPB(b.epb)}</td>
-        <td class="r sep">${diffEPT}</td>
-        <td class="r">${diffEPB}</td>
-      </tr>`;
-    });
-    document.getElementById('tDet').innerHTML=h+'</tbody></table>';
-  }
+function bdg(v, std) {
+  return `<span class="bdg ${v>=std?'ept-ok':'ept-low'}">${v.toFixed(2)}</span>`;
 }
 
-// ═══════════════════════════════════════════════════
-//  BADGE HELPERS
-// ═══════════════════════════════════════════════════
-const bdgEPT = v=>{
-  const c=v>=EPT_STD?'ept-ok':'ept-low';
-  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
-};
-const bdgEPB = v=>{
-  const c=v>=EPB_STD?'epb-ok':'epb-low';
-  return `<span class="bdg ${c}"><span class="bdg-dot"></span>${f2(v)}</span>`;
-};
-
-// ═══════════════════════════════════════════════════
-//  UTILS
-// ═══════════════════════════════════════════════════
-function setGroup(btn){
+function setGroup(btn) {
   document.querySelectorAll('.gbb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); grp=btn.dataset.g;
-  if (RAW.ept.length) render();
-}
-const g       = id=>(document.getElementById(id)?.value||'').trim();
-const setText = (id,v)=>{ const e=document.getElementById(id); if(e) e.textContent=v; };
-const sum     = (arr,k)=>arr.reduce((a,r)=>a+(r[k]||0),0);
-const r2      = n=>Math.round(n*100)/100;
-const f2      = n=>(+n).toLocaleString('id-ID',{minimumFractionDigits:2,maximumFractionDigits:2});
-const fN      = n=>(+n).toLocaleString('id-ID');
-const uniq    = a=>[...new Set(a.filter(Boolean))].sort();
-const esc     = s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const pad     = s=>String(s).padStart(2,'0');
-const cap     = s=>s.charAt(0).toUpperCase()+s.slice(1);
-function setBtn(on){ document.getElementById('btnAp').disabled=on; }
-function ovShow(on){ document.getElementById('ov').style.display=on?'flex':'none'; }
-
-function fill(id,items,keep){
-  const el=document.getElementById(id);
-  const prev=keep!==undefined?keep:el.value;
-  const ph=el.options[0].text;
-  el.innerHTML=`<option value="">${ph}</option>`;
-  items.forEach(v=>{
-    const o=document.createElement('option');
-    o.value=v;o.textContent=v;if(v===prev)o.selected=true;el.appendChild(o);
-  });
-  el.disabled=items.length===0;
+  btn.classList.add('on');
+  grp = btn.dataset.g;
+  render();
 }
 
-let _t;
-function toast(msg,type='ok'){
-  const el=document.getElementById('toast');
-  el.textContent=msg; el.className=`show ${type}`;
-  clearTimeout(_t); _t=setTimeout(()=>el.className='',3000);
+function onFC(sel, actId) {
+  const active = sel.value !== '';
+  sel.style.borderColor = active ? 'var(--red)' : '';
+  const badge = document.getElementById(actId);
+  if (badge) {
+    badge.textContent = active ? sel.value : '';
+    badge.classList.toggle('show', active);
+  }
 }
+
+// Cascade filter minimalis
+function cscReg() { render(); }
+function cscCab() { render(); }
+function cscArea() { render(); }
 </script>
 </body>
 </html>
